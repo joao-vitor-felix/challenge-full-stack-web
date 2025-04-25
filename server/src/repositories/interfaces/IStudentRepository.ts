@@ -6,6 +6,7 @@ export interface IStudentRepository {
   findStudentsWithMatchingData(
     params: DataAvailabilityParams
   ): Promise<DataAvailabilityParams[]>;
+  findByRa(ra: string): Promise<Student | null>;
   delete(ra: string): Promise<void>;
 }
 

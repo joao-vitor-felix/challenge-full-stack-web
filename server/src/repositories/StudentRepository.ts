@@ -29,6 +29,19 @@ export class StudentRepository implements IStudentRepository {
     return students;
   }
 
+  async findByRa(ra: string): Promise<Student | null> {
+    const student = await this.db.query<Student>(
+      `select * from students where ra = $1`,
+      [ra]
+    );
+
+    if (!student.length) {
+      return null;
+    }
+
+    return student[0];
+  }
+
   async delete(ra: string): Promise<void> {
     await this.db.query(`delete from students where ra = $1`, [ra]);
   }
