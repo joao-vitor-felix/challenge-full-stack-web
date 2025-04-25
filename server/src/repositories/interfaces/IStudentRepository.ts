@@ -6,6 +6,7 @@ export interface IStudentRepository {
   findStudentsWithMatchingData(
     params: DataAvailabilityParams
   ): Promise<DataAvailabilityParams[]>;
+  delete(ra: string): Promise<void>;
 }
 
 export type DataAvailabilityParams = Omit<Student, "name">;

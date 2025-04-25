@@ -30,6 +30,6 @@ export class StudentRepository implements IStudentRepository {
   }
 
   async delete(ra: string): Promise<void> {
-    throw new Error("Method not implemented.");
+    await this.db.query(`delete from students where ra = $1`, [ra]);
   }
 }
