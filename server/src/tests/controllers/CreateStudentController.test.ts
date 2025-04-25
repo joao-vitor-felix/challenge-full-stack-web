@@ -36,7 +36,14 @@ describe("CreateStudentController", () => {
     expect(response.body).toEqual(httpRequest.body);
   });
 
-  it.todo("should call use case with correct params", async () => {});
+  it("should call use case with correct params", async () => {
+    const { sut, createStudentUseCase } = makeSut();
+    const spy = vi.spyOn(createStudentUseCase, "execute");
+
+    await sut.execute(httpRequest);
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledWith(httpRequest.body);
+  });
 
   it.todo.each([])(
     "should return 400 when $scenario",
