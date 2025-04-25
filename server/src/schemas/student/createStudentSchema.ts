@@ -12,7 +12,8 @@ export const createStudentSchema = z
       .string({
         message: "cpf must be a string"
       })
-      .min(11, "cpf is required"),
+      .min(11, "cpf must contain 11 characters")
+      .max(11, "cpf must contain 11 characters"),
     name: z
       .string({
         message: "name must be a string"
