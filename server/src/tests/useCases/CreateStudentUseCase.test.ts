@@ -99,12 +99,21 @@ describe("CreateStudentUseCase", () => {
     vi.spyOn(
       studentRepository,
       "findStudentsWithMatchingData"
-    ).mockResolvedValue(students);
+    ).mockResolvedValueOnce(students);
 
     const promise = sut.execute(student);
 
     await expect(promise).rejects.toThrow(error);
   });
 
-  it.todo("should throw if student repository throws", async () => {});
+  it("should throw if student repository throws", async () => {
+    const { sut, studentRepository } = makeSut();
+    vi.spyOn(studentRepository, "createStudent").mockRejectedValueOnce(
+      new Error()
+    );
+
+    const promise = sut.execute(student);
+
+    await expect(promise).rejects.toThrow();
+  });
 });
