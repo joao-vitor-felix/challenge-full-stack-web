@@ -42,6 +42,16 @@ describe("CreateStudentUseCase", () => {
     });
   });
 
+  it("should call createStudent with correct params", async () => {
+    const { sut, studentRepository } = makeSut();
+    const spy = vi.spyOn(studentRepository, "createStudent");
+
+    await sut.execute(student);
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledWith(student);
+  });
+
   it.todo(
     "should throws if a student with provided data is found",
     async () => {}
