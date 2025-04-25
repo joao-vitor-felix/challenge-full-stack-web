@@ -28,7 +28,19 @@ describe("CreateStudentUseCase", () => {
     expect(studentCreated).toEqual(student);
   });
 
-  it.todo("should call student repository with correct params", async () => {});
+  it("should call findStudentsWithMatchingData with correct params", async () => {
+    const { sut, studentRepository } = makeSut();
+    const spy = vi.spyOn(studentRepository, "findStudentsWithMatchingData");
+
+    await sut.execute(student);
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledWith({
+      ra: student.ra,
+      cpf: student.cpf,
+      email: student.email
+    });
+  });
 
   it.todo(
     "should throws if a student with provided data is found",
