@@ -1,3 +1,4 @@
+import { ErrorResponse } from "@/controllers/helpers/http";
 import { CreateStudentController } from "@/controllers/student/CreateStudentController";
 import { CreateStudentSchema } from "@/schemas/student/createStudentSchema";
 import { CreateStudentUseCase } from "@/useCases/student/CreateStudentUseCase";
@@ -50,8 +51,14 @@ describe("CreateStudentController", () => {
     async ({ scenario }) => {}
   );
 
-  it.todo(
-    "should return 500 when use cases throws an unknown error",
-    async () => {}
-  );
+  it("should return 500 when use cases throws an unknown error", async () => {
+    const { sut, createStudentUseCase } = makeSut();
+    vi.spyOn(createStudentUseCase, "execute").mockRejectedValueOnce(
+      new Error()
+    );
+
+    const response = (await sut.execute(httpRequest)) as ErrorResponse;
+    expect(response.statusCode).toBe(500);
+    expect(response.body.code).toBe("INTERNAL_SERVER_ERROR");
+  });
 });
