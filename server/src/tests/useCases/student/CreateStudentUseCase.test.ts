@@ -49,7 +49,7 @@ describe("CreateStudentUseCase", () => {
 
   it("should call createStudent with correct params", async () => {
     const { sut, studentRepository } = makeSut();
-    const spy = vi.spyOn(studentRepository, "createStudent");
+    const spy = vi.spyOn(studentRepository, "create");
 
     await sut.execute(student);
 
@@ -60,7 +60,7 @@ describe("CreateStudentUseCase", () => {
   it.each([
     {
       scenario: "RA is already taken",
-      error: new RaAlreadyTakenError(),
+      error: RaAlreadyTakenError,
       students: [
         {
           ra: student.ra,
@@ -72,7 +72,7 @@ describe("CreateStudentUseCase", () => {
     },
     {
       scenario: "Cpf is already taken",
-      error: new CpfAlreadyTakenError(),
+      error: CpfAlreadyTakenError,
       students: [
         {
           ra: faker.string.numeric(11),
@@ -84,7 +84,7 @@ describe("CreateStudentUseCase", () => {
     },
     {
       scenario: "Email is already taken",
-      error: new EmailAlreadyTakenError(),
+      error: EmailAlreadyTakenError,
       students: [
         {
           ra: faker.string.numeric(11),
@@ -103,14 +103,12 @@ describe("CreateStudentUseCase", () => {
 
     const promise = sut.execute(student);
 
-    await expect(promise).rejects.toThrow(error);
+    await expect(promise).rejects.toBeInstanceOf(error);
   });
 
   it("should throw if student repository throws", async () => {
     const { sut, studentRepository } = makeSut();
-    vi.spyOn(studentRepository, "createStudent").mockRejectedValueOnce(
-      new Error()
-    );
+    vi.spyOn(studentRepository, "create").mockRejectedValueOnce(new Error());
 
     const promise = sut.execute(student);
 
