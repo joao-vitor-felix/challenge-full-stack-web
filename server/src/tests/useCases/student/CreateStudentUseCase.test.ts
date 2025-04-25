@@ -4,9 +4,9 @@ import {
   RaAlreadyTakenError
 } from "@/errors/student";
 import { Student } from "@/types/Student";
-import { CreateStudentUseCase } from "@/useCases/CreateStudentUseCase";
+import { CreateStudentUseCase } from "@/useCases/student/CreateStudentUseCase";
 import { faker } from "@faker-js/faker";
-import { StudentRepositoryStub } from "../stubs/StudentRepositoryStub";
+import { StudentRepositoryStub } from "../../stubs/StudentRepositoryStub";
 
 describe("CreateStudentUseCase", () => {
   function makeSut() {
