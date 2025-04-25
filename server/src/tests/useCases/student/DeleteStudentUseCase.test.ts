@@ -1,3 +1,4 @@
+import { StudentNotFoundError } from "@/errors/student";
 import { StudentRepositoryStub } from "@/tests/stubs/StudentRepositoryStub";
 import { DeleteStudentUseCase } from "@/useCases/student/DeleteStudentUseCase";
 import { faker } from "@faker-js/faker";
@@ -42,8 +43,13 @@ describe("DeleteStudentUseCase", () => {
     expect(spy).toHaveBeenCalledWith(ra);
   });
 
-  it.todo(
-    "should throw StudentNotFoundError when student is not found",
-    async () => {}
-  );
+  it("should throw StudentNotFoundError when student is not found", async () => {
+    const { sut, studentRepository } = makeSut();
+
+    vi.spyOn(studentRepository, "findByRa").mockResolvedValueOnce(null);
+
+    await expect(() => sut.execute(ra)).rejects.toBeInstanceOf(
+      StudentNotFoundError
+    );
+  });
 });
