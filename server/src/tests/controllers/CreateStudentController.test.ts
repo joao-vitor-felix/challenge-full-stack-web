@@ -148,6 +148,16 @@ describe("CreateStudentController", () => {
         }
       },
       errorMessage: /invalid/i
+    },
+    {
+      scenario: "a not allowed field is provided",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          role: "ADMIN"
+        }
+      },
+      errorMessage: /not allowed/i
     }
   ])(
     "should return 400 when $scenario",
