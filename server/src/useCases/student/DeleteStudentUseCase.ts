@@ -5,12 +5,10 @@ export class DeleteStudentUseCase {
   constructor(private studentRepository: IStudentRepository) {}
 
   async execute(ra: string): Promise<void> {
-    const student = await this.studentRepository.findByRa(ra);
+    const result = await this.studentRepository.delete(ra);
 
-    if (!student) {
+    if (result === null) {
       throw new StudentNotFoundError();
     }
-
-    await this.studentRepository.delete(ra);
   }
 }

@@ -42,7 +42,14 @@ export class StudentRepository implements IStudentRepository {
     return student[0];
   }
 
-  async delete(ra: string): Promise<void> {
-    await this.db.query(`delete from students where ra = $1`, [ra]);
+  async delete(ra: string): Promise<void | null> {
+    const student = await this.db.query<Student>(
+      `delete from students where ra = $1 returning *`,
+      [ra]
+    );
+
+    if (!student.length) {
+      return null;
+    }
   }
 }

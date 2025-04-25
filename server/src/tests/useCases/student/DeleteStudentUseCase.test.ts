@@ -23,16 +23,6 @@ describe("DeleteStudentUseCase", () => {
     expect(result).toBeUndefined();
   });
 
-  it("should call findByRa with correct ra", async () => {
-    const { sut, studentRepository } = makeSut();
-    const spy = vi.spyOn(studentRepository, "findByRa");
-
-    await sut.execute(ra);
-
-    expect(spy).toHaveBeenCalledOnce();
-    expect(spy).toHaveBeenCalledWith(ra);
-  });
-
   it("should call delete with correct ra", async () => {
     const { sut, studentRepository } = makeSut();
     const spy = vi.spyOn(studentRepository, "delete");
@@ -46,7 +36,7 @@ describe("DeleteStudentUseCase", () => {
   it("should throw StudentNotFoundError when student is not found", async () => {
     const { sut, studentRepository } = makeSut();
 
-    vi.spyOn(studentRepository, "findByRa").mockResolvedValueOnce(null);
+    vi.spyOn(studentRepository, "delete").mockResolvedValueOnce(null);
 
     await expect(() => sut.execute(ra)).rejects.toBeInstanceOf(
       StudentNotFoundError

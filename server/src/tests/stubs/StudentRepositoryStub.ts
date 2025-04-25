@@ -26,7 +26,7 @@ export class StudentRepositoryStub implements IStudentRepository {
     });
   }
 
-  async delete(_ra: string): Promise<void> {
+  async delete(_ra: string): Promise<void | null> {
     return Promise.resolve();
   }
 }
