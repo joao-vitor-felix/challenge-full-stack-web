@@ -12,15 +12,28 @@ describe("DeleteStudentUseCase", () => {
     };
   }
 
+  const ra = faker.string.numeric(11);
+
   it("should delete student successfully", async () => {
     const { sut } = makeSut();
 
-    const result = await sut.execute(faker.string.numeric(11));
+    const result = await sut.execute(ra);
 
     expect(result).toBeUndefined();
   });
-  it.todo("should call findByRa with correct ra", async () => {});
+
+  it("should call findByRa with correct ra", async () => {
+    const { sut, studentRepository } = makeSut();
+    const spy = vi.spyOn(studentRepository, "findByRa");
+
+    await sut.execute(ra);
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledWith(ra);
+  });
+
   it.todo("should call delete with correct ra", async () => {});
+
   it.todo(
     "should throw StudentNotFoundError when student is not found",
     async () => {}
