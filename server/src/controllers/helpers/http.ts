@@ -26,6 +26,16 @@ export function success<T>(
   };
 }
 
+export function notFound(message: string, code: string): ErrorResponse {
+  return {
+    statusCode: 404,
+    body: {
+      message,
+      code
+    }
+  };
+}
+
 export function invalidRequest(message: string): ErrorResponse {
   return {
     statusCode: 400,
