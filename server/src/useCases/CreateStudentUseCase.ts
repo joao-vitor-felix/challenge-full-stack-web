@@ -11,8 +11,11 @@ export class CreateStudentUseCase {
   constructor(private studentRepository: IStudentRepository) {}
 
   async execute(params: CreateStudentSchema): Promise<Student> {
-    const students =
-      await this.studentRepository.findStudentsWithMatchingData(params);
+    const students = await this.studentRepository.findStudentsWithMatchingData({
+      ra: params.ra,
+      cpf: params.cpf,
+      email: params.email
+    });
 
     for (const { ra, cpf, email } of students) {
       if (ra === params.ra) {
