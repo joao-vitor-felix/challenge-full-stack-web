@@ -1,5 +1,6 @@
 import { ErrorResponse } from "@/controllers/helpers/http";
 import { DeleteStudentController } from "@/controllers/student";
+import { StudentNotFoundError } from "@/errors/student";
 import { DeleteStudentSchema } from "@/schemas/student";
 import { DeleteStudentUseCase } from "@/useCases/student/DeleteStudentUseCase";
 import { faker } from "@faker-js/faker";
@@ -88,7 +89,19 @@ describe("DeleteStudentController", () => {
     }
   );
 
-  it.todo("should return 404 when student is not found", async () => {});
+  it("should return 404 when student is not found", async () => {
+    const { sut, deleteStudentUseCase } = makeSut();
+    vi.spyOn(deleteStudentUseCase, "execute").mockRejectedValueOnce(
+      new StudentNotFoundError()
+    );
+
+    const response = (await sut.execute(httpRequest)) as ErrorResponse;
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message).toMatch(/not found/i);
+    expect(response.body.code).toBe("STUDENT_NOT_FOUND");
+  });
+
   it.todo(
     "should return 500 when use case throws an unknown error",
     async () => {}
