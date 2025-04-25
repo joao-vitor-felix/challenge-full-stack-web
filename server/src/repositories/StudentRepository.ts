@@ -22,7 +22,7 @@ export class StudentRepository implements IStudentRepository {
     params: DataAvailabilityParams
   ): Promise<DataAvailabilityParams[]> {
     const students = await this.db.query<DataAvailabilityParams>(
-      `select * from students where ra = $1 or cpf = $2 or email = $3`,
+      `select * from students where ra = $1 or cpf = $2 or email = $3 limit 1`,
       [params.ra, params.cpf, params.email]
     );
 
