@@ -1,3 +1,8 @@
+import {
+  CpfAlreadyTakenError,
+  EmailAlreadyTakenError,
+  RaAlreadyTakenError
+} from "@/errors/student";
 import { Student } from "@/types/Student";
 import { CreateStudentUseCase } from "@/useCases/CreateStudentUseCase";
 import { faker } from "@faker-js/faker";
@@ -52,10 +57,54 @@ describe("CreateStudentUseCase", () => {
     expect(spy).toHaveBeenCalledWith(student);
   });
 
-  it.todo(
-    "should throws if a student with provided data is found",
-    async () => {}
-  );
+  it.each([
+    {
+      scenario: "RA is already taken",
+      error: new RaAlreadyTakenError(),
+      students: [
+        {
+          ra: student.ra,
+          cpf: faker.string.numeric(11),
+          email: faker.internet.email(),
+          name: faker.person.fullName()
+        }
+      ]
+    },
+    {
+      scenario: "Cpf is already taken",
+      error: new CpfAlreadyTakenError(),
+      students: [
+        {
+          ra: faker.string.numeric(11),
+          cpf: student.cpf,
+          email: faker.internet.email(),
+          name: faker.person.fullName()
+        }
+      ]
+    },
+    {
+      scenario: "Email is already taken",
+      error: new EmailAlreadyTakenError(),
+      students: [
+        {
+          ra: faker.string.numeric(11),
+          cpf: faker.string.numeric(11),
+          email: student.email,
+          name: faker.person.fullName()
+        }
+      ]
+    }
+  ])("should throw if $scenario", async ({ error, students }) => {
+    const { sut, studentRepository } = makeSut();
+    vi.spyOn(
+      studentRepository,
+      "findStudentsWithMatchingData"
+    ).mockResolvedValue(students);
+
+    const promise = sut.execute(student);
+
+    await expect(promise).rejects.toThrow(error);
+  });
 
   it.todo("should throw if student repository throws", async () => {});
 });
