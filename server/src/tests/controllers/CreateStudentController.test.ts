@@ -3,7 +3,7 @@ import { CreateStudentController } from "@/controllers/student/CreateStudentCont
 import { CreateStudentSchema } from "@/schemas/student/createStudentSchema";
 import { CreateStudentUseCase } from "@/useCases/student/CreateStudentUseCase";
 import { faker } from "@faker-js/faker";
-import type { Request } from "express";
+import { type Request } from "express";
 
 describe("CreateStudentController", () => {
   class CreateStudentUseCaseStub {
@@ -19,6 +19,8 @@ describe("CreateStudentController", () => {
     return { sut, createStudentUseCase };
   }
 
+  type HttpRequest = Request<any, any, CreateStudentSchema>;
+
   const httpRequest = {
     body: {
       ra: faker.string.numeric(11),
@@ -26,7 +28,7 @@ describe("CreateStudentController", () => {
       name: faker.person.fullName(),
       email: faker.internet.email()
     }
-  } as Request<any, any, CreateStudentSchema>;
+  } as HttpRequest;
 
   it("should return 201 alongside student successfully", async () => {
     const { sut } = makeSut();
@@ -46,9 +48,119 @@ describe("CreateStudentController", () => {
     expect(spy).toHaveBeenCalledWith(httpRequest.body);
   });
 
-  it.todo.each([])(
+  it.each([
+    {
+      scenario: "ra is not a string",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          ra: 1
+        }
+      },
+      errorMessage: /must be a string/i
+    },
+    {
+      scenario: "ra is less than 11 characters",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          ra: faker.string.numeric(10)
+        }
+      },
+      errorMessage: /must contain 11/i
+    },
+    {
+      scenario: "ra is more than 11 characters",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          ra: faker.string.numeric(12)
+        }
+      },
+      errorMessage: /must contain 11/i
+    },
+    {
+      scenario: "cpf is not a string",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          cpf: 1
+        }
+      },
+      errorMessage: /must be a string/i
+    },
+    {
+      scenario: "cpf is less than 11 characters",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          cpf: faker.string.numeric(10)
+        }
+      },
+      errorMessage: /must contain 11/i
+    },
+    {
+      scenario: "cpf is more than 11 characters",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          cpf: faker.string.numeric(12)
+        }
+      },
+      errorMessage: /must contain 11/i
+    },
+    {
+      scenario: "name is not a string",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          name: 2
+        }
+      },
+      errorMessage: /must be a string/i
+    },
+    {
+      scenario: "name is not provided",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          name: ""
+        }
+      },
+      errorMessage: /required/i
+    },
+    {
+      scenario: "email is not a string",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          email: 1
+        }
+      },
+      errorMessage: /must be a string/i
+    },
+    {
+      scenario: "email is not valid",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          email: "invalid-email"
+        }
+      },
+      errorMessage: /invalid/i
+    }
+  ])(
     "should return 400 when $scenario",
-    async ({ scenario }) => {}
+    async ({ httpRequest, errorMessage }) => {
+      const { sut } = makeSut();
+
+      const response = (await sut.execute(
+        httpRequest as HttpRequest
+      )) as ErrorResponse;
+
+      expect(response.body.message).toMatch(errorMessage);
+      expect(response.body.code).toBe("INVALID_REQUEST");
+    }
   );
 
   it("should return 500 when use cases throws an unknown error", async () => {
@@ -59,6 +171,7 @@ describe("CreateStudentController", () => {
 
     const response = (await sut.execute(httpRequest)) as ErrorResponse;
     expect(response.statusCode).toBe(500);
+    expect(response.body.message).toMatch(/server error/i);
     expect(response.body.code).toBe("INTERNAL_SERVER_ERROR");
   });
 });
