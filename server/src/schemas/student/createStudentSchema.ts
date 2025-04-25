@@ -6,7 +6,8 @@ export const createStudentSchema = z
       .string({
         message: "ra must be a string"
       })
-      .min(11, "ra is required"),
+      .min(11, "ra must contain 11 characters")
+      .max(11, "ra must contain 11 characters"),
     cpf: z
       .string({
         message: "cpf must be a string"
@@ -17,7 +18,11 @@ export const createStudentSchema = z
         message: "name must be a string"
       })
       .min(1, "name is required"),
-    email: z.string().email("email is invalid")
+    email: z
+      .string({
+        message: "email must be a string"
+      })
+      .email("email is invalid")
   })
   .strict({
     message: "Some fields are not allowed"
