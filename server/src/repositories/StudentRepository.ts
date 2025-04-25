@@ -9,7 +9,7 @@ import {
 export class StudentRepository implements IStudentRepository {
   constructor(private db: IDatabaseConnection) {}
 
-  async createStudent(params: CreateStudentSchema): Promise<Student> {
+  async create(params: CreateStudentSchema): Promise<Student> {
     const student = await this.db.query<Student>(
       `insert into students(ra, cpf, name, email) values ($1, $2, $3, $4) returning *`,
       [params.ra, params.cpf, params.name, params.email]
@@ -27,5 +27,9 @@ export class StudentRepository implements IStudentRepository {
     );
 
     return students;
+  }
+
+  async delete(ra: string): Promise<void> {
+    throw new Error("Method not implemented.");
   }
 }

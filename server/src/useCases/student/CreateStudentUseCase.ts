@@ -31,7 +31,7 @@ export class CreateStudentUseCase {
       }
     }
 
-    const student = await this.studentRepository.createStudent(params);
+    const student = await this.studentRepository.create(params);
     return student;
   }
 }
