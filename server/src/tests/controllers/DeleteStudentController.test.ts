@@ -35,7 +35,16 @@ describe("DeleteStudentController", () => {
     expect(response.body).toBeUndefined();
   });
 
-  it.todo("should call use case with correct ra", async () => {});
+  it("should call use case with correct ra", async () => {
+    const { sut, deleteStudentUseCase } = makeSut();
+    const spy = vi.spyOn(deleteStudentUseCase, "execute");
+
+    await sut.execute(httpRequest);
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledWith(httpRequest.params.ra);
+  });
+
   it.todo.each([{}])("should return 400 when $scenario", async () => {});
   it.todo("should return 404 when student is not found", async () => {});
   it.todo(
