@@ -1,31 +1,23 @@
-import { HttpError } from "./HttpError";
-
-export class RaAlreadyTakenError extends HttpError {
+export class RaAlreadyTakenError extends Error {
+  code: string;
   constructor() {
-    super(
-      409,
-      "A student with the provided ra already exists",
-      "RA_ALREADY_TAKEN"
-    );
+    super("A student with the provided ra already exists");
+    this.code = "RA_ALREADY_TAKEN";
   }
 }
 
-export class EmailAlreadyTakenError extends HttpError {
+export class EmailAlreadyTakenError extends Error {
+  code: string;
   constructor() {
-    super(
-      409,
-      "A student with the provided email already exists",
-      "EMAIL_ALREADY_TAKEN"
-    );
+    super("A student with the provided email already exists");
+    this.code = "EMAIL_ALREADY_TAKEN";
   }
 }
 
-export class CpfAlreadyTakenError extends HttpError {
+export class CpfAlreadyTakenError extends Error {
+  code: string;
   constructor() {
-    super(
-      409,
-      "A student with the provided cpf already exists",
-      "CPF_ALREADY_TAKEN"
-    );
+    super("A student with the provided cpf already exists");
+    this.code = "CPF_ALREADY_TAKEN";
   }
 }
