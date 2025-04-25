@@ -32,7 +32,15 @@ describe("DeleteStudentUseCase", () => {
     expect(spy).toHaveBeenCalledWith(ra);
   });
 
-  it.todo("should call delete with correct ra", async () => {});
+  it("should call delete with correct ra", async () => {
+    const { sut, studentRepository } = makeSut();
+    const spy = vi.spyOn(studentRepository, "delete");
+
+    await sut.execute(ra);
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledWith(ra);
+  });
 
   it.todo(
     "should throw StudentNotFoundError when student is not found",
