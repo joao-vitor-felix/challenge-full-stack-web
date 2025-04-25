@@ -1,3 +1,4 @@
+import { ErrorResponse } from "@/controllers/helpers/http";
 import { DeleteStudentController } from "@/controllers/student";
 import { DeleteStudentSchema } from "@/schemas/student";
 import { DeleteStudentUseCase } from "@/useCases/student/DeleteStudentUseCase";
@@ -45,7 +46,48 @@ describe("DeleteStudentController", () => {
     expect(spy).toHaveBeenCalledWith(httpRequest.params.ra);
   });
 
-  it.todo.each([{}])("should return 400 when $scenario", async () => {});
+  it.each([
+    {
+      scenario: "ra is not a string",
+      httpRequest: {
+        params: {
+          ra: 1
+        }
+      },
+      errorMessage: /must be a string/i
+    },
+    {
+      scenario: "ra is less than 11 characters",
+      httpRequest: {
+        params: {
+          ra: faker.string.numeric(10)
+        }
+      },
+      errorMessage: /must contain 11/i
+    },
+    {
+      scenario: "ra is more than 11 characters",
+      httpRequest: {
+        params: {
+          ra: faker.string.numeric(12)
+        }
+      },
+      errorMessage: /must contain 11/i
+    }
+  ])(
+    "should return 400 when $scenario",
+    async ({ httpRequest, errorMessage }) => {
+      const { sut } = makeSut();
+
+      const response = (await sut.execute(
+        httpRequest as HttpRequest
+      )) as ErrorResponse;
+
+      expect(response.body.message).toMatch(errorMessage);
+      expect(response.body.code).toBe("INVALID_REQUEST");
+    }
+  );
+
   it.todo("should return 404 when student is not found", async () => {});
   it.todo(
     "should return 500 when use case throws an unknown error",
