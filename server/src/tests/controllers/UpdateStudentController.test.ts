@@ -47,12 +47,35 @@ describe("UpdateStudentController", () => {
     const { sut } = makeSut();
 
     const response = await sut.execute(httpRequest);
+
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual<Student>({
       ra: httpRequest.params.ra,
       cpf: expect.any(String),
       name: httpRequest.body.name ?? expect.any(String),
       email: httpRequest.body.email ?? expect.any(String)
+    });
+  });
+
+  it("should return 200 alongside updated student with partial params", async () => {
+    const { sut } = makeSut();
+    const partialRequest = {
+      params: {
+        ra: faker.string.numeric(11)
+      },
+      body: {
+        name: faker.person.fullName()
+      }
+    } as HttpRequest;
+
+    const response = await sut.execute(partialRequest);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual<Student>({
+      ra: partialRequest.params.ra,
+      cpf: expect.any(String),
+      name: partialRequest.body.name ?? expect.any(String),
+      email: partialRequest.body.email ?? expect.any(String)
     });
   });
 
@@ -65,8 +88,6 @@ describe("UpdateStudentController", () => {
     expect(spy).toHaveBeenCalledOnce();
     expect(spy).toHaveBeenCalledWith(httpRequest.params.ra, httpRequest.body);
   });
-
-  it.todo("should update with partial params", async () => {});
 
   it.each([
     {
