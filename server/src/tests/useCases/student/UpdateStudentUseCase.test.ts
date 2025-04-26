@@ -1,3 +1,4 @@
+import { StudentNotFoundError } from "@/errors/student";
 import { UpdateStudentSchema } from "@/schemas/student";
 import { StudentRepositoryStub } from "@/tests/stubs/StudentRepositoryStub";
 import { Student } from "@/types/Student";
@@ -43,10 +44,14 @@ describe("UpdateStudentUseCase", () => {
     expect(spy).toHaveBeenCalledWith(ra, params);
   });
 
-  it.todo(
-    "should throw StudentNotFoundError if no student is returned",
-    async () => {}
-  );
+  it("should throw StudentNotFoundError if no student is returned", async () => {
+    const { sut, studentRepository } = makeSut();
+    vi.spyOn(studentRepository, "update").mockResolvedValueOnce(null);
+
+    await expect(() => sut.execute(ra, params)).rejects.toBeInstanceOf(
+      StudentNotFoundError
+    );
+  });
 
   it.todo("should throw if repository throws", async () => {});
 });
