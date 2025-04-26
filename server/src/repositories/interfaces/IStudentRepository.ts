@@ -7,7 +7,9 @@ export interface IStudentRepository {
     params: DataAvailabilityParams
   ): Promise<DataAvailabilityParams[]>;
   findByRa(ra: string): Promise<Student | null>;
+  update(ra: string, params: StudentUpdateParams): Promise<Student | null>;
   delete(ra: string): Promise<void | null>;
 }
 
 export type DataAvailabilityParams = Omit<Student, "name">;
+export type StudentUpdateParams = Pick<Student, "name" | "email">;

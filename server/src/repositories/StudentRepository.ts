@@ -3,12 +3,12 @@ import { CreateStudentSchema } from "@/schemas/student/createStudentSchema";
 import { Student } from "@/types/Student";
 import {
   DataAvailabilityParams,
-  IStudentRepository
+  IStudentRepository,
+  StudentUpdateParams
 } from "./interfaces/IStudentRepository";
 
 export class StudentRepository implements IStudentRepository {
   constructor(private db: IDatabaseConnection) {}
-
   async create(params: CreateStudentSchema): Promise<Student> {
     const student = await this.db.query<Student>(
       `insert into students(ra, cpf, name, email) values ($1, $2, $3, $4) returning *`,
@@ -40,6 +40,18 @@ export class StudentRepository implements IStudentRepository {
     }
 
     return student[0];
+  }
+
+  async update(
+    ra: string,
+    params: StudentUpdateParams
+  ): Promise<Student | null> {
+    const [student] = await this.db.query<Student>(
+      `update students set name = $1, email = $2 where ra = $3 returning *`,
+      [params.name, params.email, ra]
+    );
+
+    return student ?? null;
   }
 
   async delete(ra: string): Promise<void | null> {
