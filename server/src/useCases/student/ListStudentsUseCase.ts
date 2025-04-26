@@ -2,19 +2,16 @@ import {
   IStudentRepository,
   ListStudentsOutput
 } from "@/repositories/interfaces/IStudentRepository";
+import { ListStudentsSchema } from "@/schemas/student/listStudentsSchema";
 
-export class ListStudentUseCase {
+export class ListStudentsUseCase {
   constructor(private studentRepository: IStudentRepository) {}
 
-  async execute(
-    pageSize: number,
-    pageNumber: number,
-    name?: string
-  ): Promise<ListStudentsOutput> {
+  async execute(params: ListStudentsSchema): Promise<ListStudentsOutput> {
     const result = await this.studentRepository.list(
-      pageSize,
-      pageNumber,
-      name
+      params.pageSize,
+      params.pageNumber,
+      params.name
     );
     return result;
   }
