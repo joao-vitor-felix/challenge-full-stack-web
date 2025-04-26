@@ -1,7 +1,8 @@
 import {
   makeCreateStudentController,
-  makeDeleteStudentController
-} from "@/factories/student";
+  makeDeleteStudentController,
+  makeUpdateStudentController
+} from "@/factories";
 import { Router } from "express";
 
 export const studentsRouter = Router();
@@ -15,5 +16,11 @@ studentsRouter.post("/", async (req, res) => {
 studentsRouter.delete("/:ra", async (req, res) => {
   const deleteStudentController = makeDeleteStudentController();
   const { statusCode, body } = await deleteStudentController.execute(req);
+  res.status(statusCode).send(body);
+});
+
+studentsRouter.patch("/:ra", async (req, res) => {
+  const updateStudentController = makeUpdateStudentController();
+  const { statusCode, body } = await updateStudentController.execute(req);
   res.status(statusCode).send(body);
 });
