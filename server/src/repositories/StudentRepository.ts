@@ -1,10 +1,10 @@
 import { IDatabaseConnection } from "@/adapters/interfaces/IDatabaseConnection";
+import { UpdateStudentSchema } from "@/schemas/student";
 import { CreateStudentSchema } from "@/schemas/student/createStudentSchema";
 import { Student } from "@/types/Student";
 import {
   DataAvailabilityParams,
-  IStudentRepository,
-  StudentUpdateParams
+  IStudentRepository
 } from "./interfaces/IStudentRepository";
 
 export class StudentRepository implements IStudentRepository {
@@ -44,7 +44,7 @@ export class StudentRepository implements IStudentRepository {
 
   async update(
     ra: string,
-    params: StudentUpdateParams
+    params: UpdateStudentSchema
   ): Promise<Student | null> {
     const [student] = await this.db.query<Student>(
       `update students set name = $1, email = $2 where ra = $3 returning *`,
