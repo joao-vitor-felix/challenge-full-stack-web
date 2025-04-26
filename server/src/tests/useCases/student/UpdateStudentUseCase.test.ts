@@ -53,5 +53,10 @@ describe("UpdateStudentUseCase", () => {
     );
   });
 
-  it.todo("should throw if repository throws", async () => {});
+  it("should throw if student repository throws", async () => {
+    const { sut, studentRepository } = makeSut();
+    vi.spyOn(studentRepository, "update").mockRejectedValueOnce(new Error());
+
+    await expect(() => sut.execute(ra, params)).rejects.toThrow();
+  });
 });
