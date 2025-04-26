@@ -56,7 +56,17 @@ describe("UpdateStudentController", () => {
     });
   });
 
-  it.todo("should return 400 if ra is not valid", async () => {});
+  it("should call use case with correct params", async () => {
+    const { sut, updateStudentUseCase } = makeSut();
+    const spy = vi.spyOn(updateStudentUseCase, "execute");
+
+    await sut.execute(httpRequest);
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledWith(httpRequest.params.ra, httpRequest.body);
+  });
+
+  it.todo("should update with partial params", async () => {});
 
   it.each([
     {
