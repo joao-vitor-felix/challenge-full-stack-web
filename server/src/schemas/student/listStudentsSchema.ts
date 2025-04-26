@@ -2,50 +2,35 @@ import { z } from "zod";
 
 export const listStudentsSchema = z
   .object({
-    page: z
-      .string({
-        message: "page must be a string"
-      })
-      .transform((val, ctx) => {
-        const parsed = parseInt(val);
+    page: z.string().transform((val, ctx) => {
+      const parsed = parseInt(val);
 
-        if (isNaN(parsed)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "page must be a positive integer"
-          });
+      if (isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "page must be a positive integer"
+        });
 
-          return z.NEVER;
-        }
+        return z.NEVER;
+      }
 
-        return parsed;
-      }),
-    pageSize: z
-      .string({
-        message: "pageSize must be a string"
-      })
-      .transform((val, ctx) => {
-        const parsed = parseInt(val);
+      return parsed;
+    }),
+    pageSize: z.string().transform((val, ctx) => {
+      const parsed = parseInt(val);
 
-        if (isNaN(parsed)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "pageSize must be a positive integer"
-          });
+      if (isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "pageSize must be a positive integer"
+        });
 
-          return z.NEVER;
-        }
+        return z.NEVER;
+      }
 
-        return parsed;
-      }),
-    name: z
-      .string({
-        message: "name must be a string"
-      })
-      .min(1, {
-        message: "name must have at least 1 character"
-      })
-      .optional()
+      return parsed;
+    }),
+    name: z.string().optional()
   })
   .strict({
     message: "Some fields are not allowed"
