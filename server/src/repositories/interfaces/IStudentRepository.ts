@@ -9,7 +9,22 @@ export interface IStudentRepository {
   ): Promise<DataAvailabilityParams[]>;
   findByRa(ra: string): Promise<Student | null>;
   update(ra: string, params: UpdateStudentSchema): Promise<Student | null>;
+  list(
+    pageSize: number,
+    pageNumber: number,
+    name?: string
+  ): Promise<ListStudentsOutput>;
   delete(ra: string): Promise<void | null>;
 }
 
 export type DataAvailabilityParams = Omit<Student, "name">;
+
+export type ListStudentsOutput = {
+  data: Student[];
+  pagination: {
+    total: number;
+    totalPages: number;
+    pageSize: number;
+    currentPage: number;
+  };
+};

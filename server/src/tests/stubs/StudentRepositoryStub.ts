@@ -1,6 +1,7 @@
 import {
   DataAvailabilityParams,
-  IStudentRepository
+  IStudentRepository,
+  ListStudentsOutput
 } from "@/repositories/interfaces/IStudentRepository";
 import { UpdateStudentSchema } from "@/schemas/student";
 import { CreateStudentSchema } from "@/schemas/student/createStudentSchema";
@@ -36,6 +37,29 @@ export class StudentRepositoryStub implements IStudentRepository {
       cpf: faker.string.numeric(11),
       name: params.name ?? faker.person.fullName(),
       email: params.email ?? faker.internet.email()
+    });
+  }
+
+  async list(
+    pageSize: number,
+    pageNumber: number,
+    _name = ""
+  ): Promise<ListStudentsOutput> {
+    return Promise.resolve({
+      data: [
+        {
+          ra: faker.string.numeric(11),
+          cpf: faker.string.numeric(11),
+          name: faker.person.fullName(),
+          email: faker.internet.email()
+        }
+      ],
+      pagination: {
+        total: 1,
+        totalPages: 1,
+        pageSize,
+        currentPage: pageNumber
+      }
     });
   }
 
