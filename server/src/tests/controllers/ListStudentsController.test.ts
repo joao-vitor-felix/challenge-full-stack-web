@@ -1,3 +1,4 @@
+import { ErrorResponse } from "@/controllers/helpers/http";
 import { ListStudentsController } from "@/controllers/student";
 import { ListStudentsOutput } from "@/repositories/interfaces/IStudentRepository";
 import { ListStudentsSchema } from "@/schemas/student/listStudentsSchema";
@@ -91,7 +92,42 @@ describe("ListStudentsController", () => {
     });
   });
 
-  it.todo.each([])("should return 400 when $scenario", async () => {});
+  it.each([
+    {
+      scenario: "page is not a number",
+      httpRequest: {
+        query: {
+          ...httpRequest.query,
+          page: "a"
+        }
+      },
+      errorMessage: /must be a positive integer/i
+    },
+    {
+      scenario: "pageSize is not a number",
+      httpRequest: {
+        query: {
+          ...httpRequest.query,
+          pageSize: "a"
+        }
+      },
+      errorMessage: /must be a positive integer/i
+    }
+  ])(
+    "should return 400 when $scenario",
+    async ({ httpRequest, errorMessage }) => {
+      const { sut } = makeSut();
+
+      const response = (await sut.execute(
+        httpRequest as HttpRequest
+      )) as ErrorResponse;
+
+      expect(response.statusCode).toBe(400);
+      expect(response.body.message).toMatch(errorMessage);
+      expect(response.body.code).toBe("INVALID_REQUEST");
+    }
+  );
+
   it.todo(
     "should return 500 when use case throws an unknown error",
     async () => {}
