@@ -1,11 +1,15 @@
 import { PostgresAdapter } from "@/adapters/PostgresAdapter";
-import { DeleteStudentController } from "@/controllers/student";
+import {
+  DeleteStudentController,
+  ListStudentsController
+} from "@/controllers/student";
 import { CreateStudentController } from "@/controllers/student/CreateStudentController";
 import { UpdateStudentController } from "@/controllers/student/UpdateStudentController";
 import { pool } from "@/db/db";
 import { StudentRepository } from "@/repositories/StudentRepository";
 import { CreateStudentUseCase } from "@/useCases/student/CreateStudentUseCase";
 import { DeleteStudentUseCase } from "@/useCases/student/DeleteStudentUseCase";
+import { ListStudentsUseCase } from "@/useCases/student/ListStudentsUseCase";
 import { UpdateStudentUseCase } from "@/useCases/student/UpdateStudentUseCase";
 
 const db = new PostgresAdapter(pool);
@@ -33,4 +37,12 @@ export function makeUpdateStudentController() {
     updateStudentUseCase
   );
   return updateStudentController;
+}
+
+export function makeListStudentsController() {
+  const listStudentsUseCase = new ListStudentsUseCase(studentRepository);
+  const listStudentsController = new ListStudentsController(
+    listStudentsUseCase
+  );
+  return listStudentsController;
 }

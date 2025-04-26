@@ -41,8 +41,8 @@ export class StudentRepositoryStub implements IStudentRepository {
   }
 
   async list(
+    page: number,
     pageSize: number,
-    pageNumber: number,
     _name = ""
   ): Promise<ListStudentsOutput> {
     return Promise.resolve({
@@ -58,7 +58,7 @@ export class StudentRepositoryStub implements IStudentRepository {
         total: 1,
         totalPages: 1,
         pageSize,
-        currentPage: pageNumber
+        currentPage: page
       }
     });
   }

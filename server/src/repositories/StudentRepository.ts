@@ -67,8 +67,8 @@ export class StudentRepository implements IStudentRepository {
   }
 
   async list(
+    page: number,
     pageSize: number,
-    pageNumber: number,
     name = ""
   ): Promise<ListStudentsOutput> {
     const countQuery = this.db.query<{ count: string }>(
@@ -83,7 +83,7 @@ export class StudentRepository implements IStudentRepository {
       order by name
       limit $2
       offset $3`,
-      [name, pageSize, pageSize * (pageNumber - 1)]
+      [name, pageSize, pageSize * (page - 1)]
     );
 
     const [[countResult], students] = await Promise.all([
@@ -100,7 +100,7 @@ export class StudentRepository implements IStudentRepository {
         total,
         totalPages,
         pageSize,
-        currentPage: pageNumber
+        currentPage: page
       }
     };
   }

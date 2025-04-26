@@ -9,8 +9,8 @@ export class ListStudentsUseCase {
 
   async execute(params: ListStudentsSchema): Promise<ListStudentsOutput> {
     const result = await this.studentRepository.list(
+      params.page,
       params.pageSize,
-      params.pageNumber,
       params.name
     );
     return result;

@@ -2,6 +2,24 @@ import { z } from "zod";
 
 export const listStudentsSchema = z
   .object({
+    page: z
+      .string({
+        message: "page must be a string"
+      })
+      .transform((val, ctx) => {
+        const parsed = parseInt(val);
+
+        if (isNaN(parsed)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "page must be a positive integer"
+          });
+
+          return z.NEVER;
+        }
+
+        return parsed;
+      }),
     pageSize: z
       .string({
         message: "pageSize must be a string"
@@ -13,24 +31,6 @@ export const listStudentsSchema = z
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "pageSize must be a positive integer"
-          });
-
-          return z.NEVER;
-        }
-
-        return parsed;
-      }),
-    pageNumber: z
-      .string({
-        message: "pageNumber must be a string"
-      })
-      .transform((val, ctx) => {
-        const parsed = parseInt(val);
-
-        if (isNaN(parsed)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "pageNumber must be a positive integer"
           });
 
           return z.NEVER;

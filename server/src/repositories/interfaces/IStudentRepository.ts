@@ -10,8 +10,8 @@ export interface IStudentRepository {
   findByRa(ra: string): Promise<Student | null>;
   update(ra: string, params: UpdateStudentSchema): Promise<Student | null>;
   list(
+    page: number,
     pageSize: number,
-    pageNumber: number,
     name?: string
   ): Promise<ListStudentsOutput>;
   delete(ra: string): Promise<void | null>;

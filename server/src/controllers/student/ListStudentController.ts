@@ -9,12 +9,10 @@ export class ListStudentsController {
 
   async execute(request: Request) {
     try {
-      const { pageNumber, pageSize, name } = listStudentsSchema.parse(
-        request.query
-      );
+      const { page, pageSize, name } = listStudentsSchema.parse(request.query);
 
       const result = await this.listStudentsUseCase.execute({
-        pageNumber,
+        page,
         pageSize,
         name
       });
