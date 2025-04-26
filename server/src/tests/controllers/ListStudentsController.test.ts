@@ -77,7 +77,20 @@ describe("ListStudentsController", () => {
     });
   });
 
-  it.todo("should call use case with correct params", async () => {});
+  it("should call use case with correct params", async () => {
+    const { sut, listStudentsUseCase } = makeSut();
+    const spy = vi.spyOn(listStudentsUseCase, "execute");
+
+    await sut.execute(httpRequest);
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledWith({
+      page: Number(httpRequest.query.page),
+      pageSize: Number(httpRequest.query.pageSize),
+      name: httpRequest.query.name
+    });
+  });
+
   it.todo.each([])("should return 400 when $scenario", async () => {});
   it.todo(
     "should return 500 when use case throws an unknown error",
