@@ -33,7 +33,15 @@ describe("UpdateStudentUseCase", () => {
     });
   });
 
-  it.todo("should call update with correct params", async () => {});
+  it("should call update with correct params", async () => {
+    const { sut, studentRepository } = makeSut();
+    const spy = vi.spyOn(studentRepository, "update");
+
+    await sut.execute(ra, params);
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledWith(ra, params);
+  });
 
   it.todo(
     "should throw StudentNotFoundError if no student is returned",
