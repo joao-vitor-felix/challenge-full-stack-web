@@ -3,7 +3,7 @@ import { CreateStudentController } from "@/controllers/student/CreateStudentCont
 import { CreateStudentSchema } from "@/schemas/student/createStudentSchema";
 import { CreateStudentUseCase } from "@/useCases/student/CreateStudentUseCase";
 import { faker } from "@faker-js/faker";
-import { type Request } from "express";
+import type { Request } from "express";
 
 describe("CreateStudentController", () => {
   class CreateStudentUseCaseStub {

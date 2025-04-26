@@ -4,7 +4,7 @@ import { StudentNotFoundError } from "@/errors/student";
 import { DeleteStudentSchema } from "@/schemas/student";
 import { DeleteStudentUseCase } from "@/useCases/student/DeleteStudentUseCase";
 import { faker } from "@faker-js/faker";
-import { type Request } from "express";
+import type { Request } from "express";
 
 describe("DeleteStudentController", () => {
   class DeleteStudentUseCaseStub {

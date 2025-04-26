@@ -5,7 +5,7 @@ import { UpdateStudentSchema } from "@/schemas/student";
 import { Student } from "@/types/Student";
 import { UpdateStudentUseCase } from "@/useCases/student/UpdateStudentUseCase";
 import { faker } from "@faker-js/faker";
-import { type Request } from "express";
+import type { Request } from "express";
 
 describe("UpdateStudentController", () => {
   class UpdateStudentUseCaseStub {
