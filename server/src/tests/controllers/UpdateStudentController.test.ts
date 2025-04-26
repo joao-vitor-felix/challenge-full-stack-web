@@ -192,8 +192,16 @@ describe("UpdateStudentController", () => {
     expect(response.body.code).toBe("STUDENT_NOT_FOUND");
   });
 
-  it.todo(
-    "should return 500 when use case throws an unknown error",
-    async () => {}
-  );
+  it("should return 500 when use case throws an unknown error", async () => {
+    const { sut, updateStudentUseCase } = makeSut();
+    vi.spyOn(updateStudentUseCase, "execute").mockRejectedValueOnce(
+      new Error()
+    );
+
+    const response = (await sut.execute(httpRequest)) as ErrorResponse;
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toMatch(/server error/i);
+    expect(response.body.code).toBe("INTERNAL_SERVER_ERROR");
+  });
 });
