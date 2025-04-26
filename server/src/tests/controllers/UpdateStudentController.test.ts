@@ -1,5 +1,6 @@
 import { ErrorResponse } from "@/controllers/helpers/http";
 import { UpdateStudentController } from "@/controllers/student/UpdateStudentController";
+import { StudentNotFoundError } from "@/errors/student";
 import { UpdateStudentSchema } from "@/schemas/student";
 import { Student } from "@/types/Student";
 import { UpdateStudentUseCase } from "@/useCases/student/UpdateStudentUseCase";
@@ -178,10 +179,18 @@ describe("UpdateStudentController", () => {
     }
   );
 
-  it.todo(
-    "should return 404 when use case throws StudentNotFoundError",
-    async () => {}
-  );
+  it("should return 404 when use case throws StudentNotFoundError", async () => {
+    const { sut, updateStudentUseCase } = makeSut();
+    vi.spyOn(updateStudentUseCase, "execute").mockRejectedValueOnce(
+      new StudentNotFoundError()
+    );
+
+    const response = (await sut.execute(httpRequest)) as ErrorResponse;
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message).toMatch(/not found/i);
+    expect(response.body.code).toBe("STUDENT_NOT_FOUND");
+  });
 
   it.todo(
     "should return 500 when use case throws an unknown error",
