@@ -43,7 +43,18 @@ describe("UpdateStudentController", () => {
     }
   } as HttpRequest;
 
-  it.todo("should return 200 alongside updated student", async () => {});
+  it("should return 200 alongside updated student", async () => {
+    const { sut } = makeSut();
+
+    const response = await sut.execute(httpRequest);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual<Student>({
+      ra: httpRequest.params.ra,
+      cpf: expect.any(String),
+      name: httpRequest.body.name ?? expect.any(String),
+      email: httpRequest.body.email ?? expect.any(String)
+    });
+  });
 
   it.todo("should return 400 if ra is not valid", async () => {});
 
