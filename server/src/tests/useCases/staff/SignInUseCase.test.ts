@@ -73,7 +73,14 @@ describe("SignUpUseCase", () => {
     expect(spy).toHaveBeenCalledWith(params.password, staff.hashedPassword);
   });
 
-  it.todo("should call sign with correct params", async () => {});
+  it("should call sign with correctly", async () => {
+    const { sut, jwtTokenAdapter } = makeSut();
+    const spy = vi.spyOn(jwtTokenAdapter, "sign");
+
+    await sut.execute(params.email, params.password);
+
+    expect(spy).toHaveBeenCalledTimes(2);
+  });
 
   it.todo(
     "should return StaffNotFoundError if a staff is not found",
