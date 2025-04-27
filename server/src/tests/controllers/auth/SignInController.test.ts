@@ -82,8 +82,16 @@ describe("SignInController", () => {
     expect(response.body.code).toBe("INVALID_REQUEST");
   });
 
-  it.todo(
-    "should return 500 when use case throws an unknown erro",
-    async () => {}
-  );
+  it("should return 500 when use case throws an unknown error", async () => {
+    const { sut, signInUseCase } = makeSut();
+    vi.spyOn(signInUseCase, "execute").mockRejectedValueOnce(
+      new Error("Unknown error")
+    );
+
+    const response = (await sut.execute(httpRequest)) as ErrorResponse;
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toMatch(/internal server error/i);
+    expect(response.body.code).toBe("INTERNAL_SERVER_ERROR");
+  });
 });
