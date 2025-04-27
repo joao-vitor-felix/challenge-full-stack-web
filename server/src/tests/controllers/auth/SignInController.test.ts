@@ -40,7 +40,17 @@ describe("SignInController", () => {
     expect(response.body).toEqual(tokens);
   });
 
-  it.todo("should call use case with correct params", async () => {});
+  it("should call use case with correct params", async () => {
+    const { sut, signInUseCase } = makeSut();
+    const spy = vi.spyOn(signInUseCase, "execute");
+
+    await sut.execute(httpRequest);
+
+    expect(spy).toHaveBeenCalledExactlyOnceWith(
+      httpRequest.body.email,
+      httpRequest.body.password
+    );
+  });
 
   it.todo.each([])("should return 400 when $scenario", async () => {});
 
