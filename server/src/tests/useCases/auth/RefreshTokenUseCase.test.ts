@@ -38,9 +38,17 @@ describe("RefreshTokenUseCase", () => {
     expect(verifyTokenParameter).toBe("valid_token");
   });
 
-  it.todo("should call verify with correct params", async () => {});
-  it.todo("should call verify with correct params", async () => {});
-  it.todo("should call verify with correct params", async () => {});
-  it.todo("should call verify with correct params", async () => {});
-  it.todo("should call verify with correct params", async () => {});
+  it("should call getById with correct params", async () => {
+    const { sut, staffRepository } = makeSut();
+    const spy = vi.spyOn(staffRepository, "getById");
+
+    await sut.execute("valid_token");
+
+    expect(spy).toHaveBeenCalledExactlyOnceWith("stubbedId");
+  });
+
+  it.todo(
+    "should throw StaffNotFoundError when staff is not found",
+    async () => {}
+  );
 });

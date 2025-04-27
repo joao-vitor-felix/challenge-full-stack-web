@@ -17,7 +17,7 @@ export class JwtTokenAdapterStub {
     _options?: T extends undefined ? undefined : SignOptions
   ): DecodedToken {
     return {
-      sub: faker.string.uuid(),
+      sub: "stubbedId",
       exp: faker.number.int(),
       iat: faker.number.int()
     };
