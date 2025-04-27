@@ -1,3 +1,4 @@
+import { StaffNotFoundError } from "@/errors/staff";
 import { JwtTokenAdapterStub } from "@/tests/stubs/JwtTokenAdapterStub";
 import { StaffRepositoryStub } from "@/tests/stubs/StaffRepositoryStub";
 import { RefreshTokenUseCase } from "@/useCases/auth/RefreshTokenUseCase";
@@ -47,8 +48,12 @@ describe("RefreshTokenUseCase", () => {
     expect(spy).toHaveBeenCalledExactlyOnceWith("stubbedId");
   });
 
-  it.todo(
-    "should throw StaffNotFoundError when staff is not found",
-    async () => {}
-  );
+  it("should throw StaffNotFoundError when staff is not found", async () => {
+    const { sut, staffRepository } = makeSut();
+    vi.spyOn(staffRepository, "getById").mockResolvedValueOnce(null);
+
+    await expect(sut.execute("valid_token")).rejects.toBeInstanceOf(
+      StaffNotFoundError
+    );
+  });
 });
