@@ -17,4 +17,8 @@ export class StaffRepositoryStub implements IStaffRepository {
   async getByEmail(_email: string): Promise<Staff | null> {
     return Promise.resolve(null);
   }
+
+  async getById(_id: string): Promise<Staff | null> {
+    return Promise.resolve(null);
+  }
 }

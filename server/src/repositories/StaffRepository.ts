@@ -27,4 +27,15 @@ export class StaffRepository implements IStaffRepository {
 
     return staff ?? null;
   }
+
+  async getById(id: string): Promise<Staff | null> {
+    const [staff] = await this.db.query<Staff>(
+      `select id, name, email, hashed_password as "hashedPassword", role
+      from staff
+      where id = $1`,
+      [id]
+    );
+
+    return staff ?? null;
+  }
 }
