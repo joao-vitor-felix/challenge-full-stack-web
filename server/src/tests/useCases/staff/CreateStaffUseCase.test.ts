@@ -91,7 +91,12 @@ describe("CreateStaffUseCase", () => {
     );
   });
 
-  it.todo("should throw when repository throws", async () => {});
+  it("should throw when passwordHasher throws", async () => {
+    const { sut, passwordHasher } = makeSut();
+    vi.spyOn(passwordHasher, "hash").mockRejectedValueOnce(new Error());
 
-  it.todo("should throw when passwordHasher throws", async () => {});
+    await expect(() => sut.execute(staff)).rejects.toThrow();
+  });
+
+  it.todo("should throw when repository throws", async () => {});
 });
