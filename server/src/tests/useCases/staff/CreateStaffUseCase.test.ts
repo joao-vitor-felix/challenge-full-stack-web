@@ -62,7 +62,18 @@ describe("CreateStaffUseCase", () => {
     expect(hashSpy).toHaveBeenCalledWith(staff.password);
   });
 
-  it.todo("should call create with correct params", async () => {});
+  it("should call create with correct params", async () => {
+    const { sut, staffRepository } = makeSut();
+    const createSpy = vi.spyOn(staffRepository, "create");
+
+    await sut.execute(staff);
+
+    expect(createSpy).toHaveBeenCalledOnce();
+    expect(createSpy).toHaveBeenCalledWith({
+      ...staff,
+      password: "hashedPassword"
+    });
+  });
 
   it.todo(
     "should return EmailAlreadyTakenError when email is already in use",
