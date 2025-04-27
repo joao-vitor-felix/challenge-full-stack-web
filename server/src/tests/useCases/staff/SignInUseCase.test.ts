@@ -101,7 +101,14 @@ describe("SignUpUseCase", () => {
     await expect(promise).rejects.toBeInstanceOf(PasswordMismatchError);
   });
 
-  it.todo("should throw if repository throws", async () => {});
+  it("should throw if repository throws", async () => {
+    const { sut, staffRepository } = makeSut();
+    vi.spyOn(staffRepository, "getByEmail").mockRejectedValue(new Error());
+
+    const promise = sut.execute(params.email, params.password);
+
+    await expect(promise).rejects.toThrow();
+  });
 
   it.todo("should throw if compare throws", async () => {});
 
