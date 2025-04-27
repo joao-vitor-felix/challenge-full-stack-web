@@ -1,31 +1,19 @@
 import { EmailAlreadyTakenError } from "@/errors";
 import { SignUpSchema } from "@/schemas";
+import { PasswordHasherAdapterStub } from "@/tests/stubs/PasswordHasherStub";
 import { StaffRepositoryStub } from "@/tests/stubs/StaffRepositoryStub";
 import { SignUpUseCase } from "@/useCases";
 import { faker } from "@faker-js/faker";
 
 describe("SignUpUseCase", () => {
-  class PasswordHasherStub {
-    async hash(_password: string): Promise<string> {
-      return Promise.resolve("hashedPassword");
-    }
-
-    async compare(
-      _password: string,
-      _hashedPassword: string
-    ): Promise<boolean> {
-      return Promise.resolve(true);
-    }
-  }
-
   function makeSut() {
     const staffRepository = new StaffRepositoryStub();
-    const passwordHasher = new PasswordHasherStub();
-    const sut = new SignUpUseCase(passwordHasher, staffRepository);
+    const passwordHasherAdapter = new PasswordHasherAdapterStub();
+    const sut = new SignUpUseCase(passwordHasherAdapter, staffRepository);
 
     return {
       staffRepository,
-      passwordHasher,
+      passwordHasherAdapter,
       sut
     };
   }
@@ -54,8 +42,8 @@ describe("SignUpUseCase", () => {
   });
 
   it("should call hash with correct params", async () => {
-    const { sut, passwordHasher } = makeSut();
-    const hashSpy = vi.spyOn(passwordHasher, "hash");
+    const { sut, passwordHasherAdapter } = makeSut();
+    const hashSpy = vi.spyOn(passwordHasherAdapter, "hash");
 
     await sut.execute(staff);
 
@@ -91,9 +79,9 @@ describe("SignUpUseCase", () => {
     );
   });
 
-  it("should throw when passwordHasher throws", async () => {
-    const { sut, passwordHasher } = makeSut();
-    vi.spyOn(passwordHasher, "hash").mockRejectedValueOnce(new Error());
+  it("should throw when passwordHasherAdapter throws", async () => {
+    const { sut, passwordHasherAdapter } = makeSut();
+    vi.spyOn(passwordHasherAdapter, "hash").mockRejectedValueOnce(new Error());
 
     await expect(() => sut.execute(staff)).rejects.toThrow();
   });
