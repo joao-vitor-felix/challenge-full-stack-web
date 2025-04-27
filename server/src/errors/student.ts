@@ -9,7 +9,7 @@ export class RaAlreadyTakenError extends Error {
 export class EmailAlreadyTakenError extends Error {
   code: string;
   constructor() {
-    super("A student with the provided email already exists");
+    super("The provided email have already been taken");
     this.code = "EMAIL_ALREADY_TAKEN";
   }
 }
