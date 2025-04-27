@@ -51,7 +51,15 @@ describe("CreateStaffController", () => {
     });
   });
 
-  it.todo("should call use case with correct param", async () => {});
+  it("should call use case with correct param", async () => {
+    const { sut, createStaffUseCase } = makeSut();
+    const spy = vi.spyOn(createStaffUseCase, "execute");
+
+    await sut.execute(httpRequest);
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledWith(httpRequest.body);
+  });
 
   it.todo.each([])("should return 400 when $scenario", async () => {});
 
