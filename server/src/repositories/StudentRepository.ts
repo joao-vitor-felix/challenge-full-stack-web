@@ -1,5 +1,5 @@
 import { IDatabaseConnection } from "@/adapters/interfaces/IDatabaseConnection";
-import { UpdateStudentSchema } from "@/schemas/student";
+import { UpdateStudentSchema } from "@/schemas";
 import { CreateStudentSchema } from "@/schemas/student/createStudentSchema";
 import { Student } from "@/types/Student";
 import {

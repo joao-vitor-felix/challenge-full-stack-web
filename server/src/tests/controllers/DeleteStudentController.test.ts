@@ -1,7 +1,7 @@
 import { ErrorResponse } from "@/controllers/helpers/http";
 import { DeleteStudentController } from "@/controllers/student";
 import { StudentNotFoundError } from "@/errors/student";
-import { DeleteStudentSchema } from "@/schemas/student";
+import { DeleteStudentSchema } from "@/schemas";
 import { DeleteStudentUseCase } from "@/useCases/student/DeleteStudentUseCase";
 import { faker } from "@faker-js/faker";
 import type { Request } from "express";

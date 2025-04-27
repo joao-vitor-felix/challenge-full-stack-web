@@ -1,5 +1,5 @@
 import { StudentNotFoundError } from "@/errors/student";
-import { UpdateStudentSchema } from "@/schemas/student";
+import { UpdateStudentSchema } from "@/schemas";
 import { StudentRepositoryStub } from "@/tests/stubs/StudentRepositoryStub";
 import { Student } from "@/types/Student";
 import { UpdateStudentUseCase } from "@/useCases/student/UpdateStudentUseCase";

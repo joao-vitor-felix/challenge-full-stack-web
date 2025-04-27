@@ -1,6 +1,6 @@
 import { StudentNotFoundError } from "@/errors/student";
 import { IStudentRepository } from "@/repositories/interfaces/IStudentRepository";
-import { UpdateStudentSchema } from "@/schemas/student";
+import { UpdateStudentSchema } from "@/schemas";
 
 export class UpdateStudentUseCase {
   constructor(private studentRepository: IStudentRepository) {}

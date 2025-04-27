@@ -1,7 +1,7 @@
 import { ErrorResponse } from "@/controllers/helpers/http";
 import { UpdateStudentController } from "@/controllers/student/UpdateStudentController";
 import { StudentNotFoundError } from "@/errors/student";
-import { UpdateStudentSchema } from "@/schemas/student";
+import { UpdateStudentSchema } from "@/schemas";
 import { Student } from "@/types/Student";
 import { UpdateStudentUseCase } from "@/useCases/student/UpdateStudentUseCase";
 import { faker } from "@faker-js/faker";

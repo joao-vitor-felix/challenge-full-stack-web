@@ -3,7 +3,7 @@ import {
   IStudentRepository,
   ListStudentsOutput
 } from "@/repositories/interfaces/IStudentRepository";
-import { UpdateStudentSchema } from "@/schemas/student";
+import { UpdateStudentSchema } from "@/schemas";
 import { CreateStudentSchema } from "@/schemas/student/createStudentSchema";
 import { Student } from "@/types/Student";
 import { faker } from "@faker-js/faker";

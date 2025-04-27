@@ -1,8 +1,5 @@
 import { StudentNotFoundError } from "@/errors/student";
-import {
-  updateStudentParamsSchema,
-  updateStudentSchema
-} from "@/schemas/student";
+import { updateStudentParamsSchema, updateStudentSchema } from "@/schemas";
 import { UpdateStudentUseCase } from "@/useCases/student/UpdateStudentUseCase";
 import type { Request } from "express";
 import { ZodError } from "zod";
