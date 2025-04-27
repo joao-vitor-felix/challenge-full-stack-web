@@ -1,4 +1,6 @@
 import { SignInController } from "@/controllers/auth";
+import { ErrorResponse } from "@/controllers/helpers/http";
+import { StaffNotFoundError } from "@/errors/staff";
 import { SignInUseCase } from "@/useCases/auth/SignInUseCase";
 import { faker } from "@faker-js/faker";
 import type { Request } from "express";
@@ -54,10 +56,18 @@ describe("SignInController", () => {
 
   it.todo.each([])("should return 400 when $scenario", async () => {});
 
-  it.todo(
-    "should return 404 when use case throws StaffNotFoundError",
-    async () => {}
-  );
+  it("should return 404 when use case throws StaffNotFoundError", async () => {
+    const { sut, signInUseCase } = makeSut();
+    vi.spyOn(signInUseCase, "execute").mockRejectedValueOnce(
+      new StaffNotFoundError()
+    );
+
+    const response = (await sut.execute(httpRequest)) as ErrorResponse;
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message).toMatch(/not found/i);
+    expect(response.body.code).toBe("STAFF_NOT_FOUND");
+  });
 
   it.todo(
     "should return 400 when use case throws PasswordMismatchError",
