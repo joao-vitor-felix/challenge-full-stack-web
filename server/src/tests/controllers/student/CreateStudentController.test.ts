@@ -173,6 +173,8 @@ describe("CreateStudentController", () => {
     }
   );
 
+  //TODO: add tests for the errors
+
   it("should return 500 when use cases throws an unknown error", async () => {
     const { sut, createStudentUseCase } = makeSut();
     vi.spyOn(createStudentUseCase, "execute").mockRejectedValueOnce(
