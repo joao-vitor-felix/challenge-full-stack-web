@@ -1,4 +1,5 @@
 import { RefreshTokenController } from "@/controllers/auth/RefreshTokenController";
+import { ErrorResponse } from "@/controllers/helpers/http";
 import { RefreshTokenUseCase } from "@/useCases/auth/RefreshTokenUseCase";
 import { faker } from "@faker-js/faker";
 import type { Request } from "express";
@@ -39,9 +40,30 @@ describe("RefreshTokenController", () => {
     expect(response.body).toEqual(tokens);
   });
 
-  it.todo("should call use case with correct params", async () => {});
+  it("should call use case with correct params", async () => {
+    const { sut, refreshTokenUseCase } = makeSut();
+    const spy = vi.spyOn(refreshTokenUseCase, "execute");
 
-  it.todo("should return 400 when token is not a string", async () => {});
+    await sut.execute(httpRequest);
+
+    expect(spy).toHaveBeenCalledExactlyOnceWith(httpRequest.body.token);
+  });
+
+  it("should return 400 when token is not a string", async () => {
+    const { sut } = makeSut();
+
+    const request = {
+      body: {
+        token: 1
+      }
+    } as Request;
+
+    const response = (await sut.execute(request)) as ErrorResponse;
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toMatch(/must be a string/i);
+    expect(response.body.code).toBe("INVALID_REQUEST");
+  });
 
   it.todo("should return 400 when token is not a jwt", async () => {});
 
