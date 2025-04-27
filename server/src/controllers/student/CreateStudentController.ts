@@ -8,10 +8,10 @@ import { CreateStudentUseCase } from "@/useCases/student/CreateStudentUseCase";
 import type { Request } from "express";
 import { ZodError } from "zod";
 import {
+  badRequest,
   conflict,
   created,
-  internalServerError,
-  invalidRequest
+  internalServerError
 } from "../helpers/http";
 
 export class CreateStudentController {
@@ -24,7 +24,7 @@ export class CreateStudentController {
       return created(student);
     } catch (error) {
       if (error instanceof ZodError) {
-        return invalidRequest(error.errors[0].message);
+        return badRequest(error.errors[0].message);
       }
 
       if (

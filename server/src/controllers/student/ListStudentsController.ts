@@ -2,7 +2,7 @@ import { listStudentsSchema } from "@/schemas/student/listStudentsSchema";
 import { ListStudentsUseCase } from "@/useCases/student/ListStudentsUseCase";
 import type { Request } from "express";
 import { ZodError } from "zod";
-import { internalServerError, invalidRequest, success } from "../helpers/http";
+import { badRequest, internalServerError, success } from "../helpers/http";
 
 export class ListStudentsController {
   constructor(private listStudentsUseCase: ListStudentsUseCase) {}
@@ -20,7 +20,7 @@ export class ListStudentsController {
       return success(result);
     } catch (error) {
       if (error instanceof ZodError) {
-        return invalidRequest(error.errors[0].message);
+        return badRequest(error.errors[0].message);
       }
 
       console.log(error);

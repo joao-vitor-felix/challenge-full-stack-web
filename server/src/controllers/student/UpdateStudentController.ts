@@ -4,8 +4,8 @@ import { UpdateStudentUseCase } from "@/useCases/student/UpdateStudentUseCase";
 import type { Request } from "express";
 import { ZodError } from "zod";
 import {
+  badRequest,
   internalServerError,
-  invalidRequest,
   notFound,
   success
 } from "../helpers/http";
@@ -21,7 +21,7 @@ export class UpdateStudentController {
       return success(student);
     } catch (error) {
       if (error instanceof ZodError) {
-        return invalidRequest(error.errors[0].message);
+        return badRequest(error.errors[0].message);
       }
 
       if (error instanceof StudentNotFoundError) {

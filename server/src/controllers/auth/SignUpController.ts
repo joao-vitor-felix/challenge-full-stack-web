@@ -4,10 +4,10 @@ import { SignUpUseCase } from "@/useCases";
 import type { Request } from "express";
 import { ZodError } from "zod";
 import {
+  badRequest,
   conflict,
   created,
-  internalServerError,
-  invalidRequest
+  internalServerError
 } from "../helpers/http";
 
 export class SignUpController {
@@ -20,7 +20,7 @@ export class SignUpController {
       return created(staff);
     } catch (error) {
       if (error instanceof ZodError) {
-        return invalidRequest(error.errors[0].message);
+        return badRequest(error.errors[0].message);
       }
 
       if (error instanceof EmailAlreadyTakenError) {
