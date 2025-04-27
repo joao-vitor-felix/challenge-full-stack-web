@@ -51,5 +51,12 @@ describe("ListStudentsUseCase", () => {
     expect(spy).toHaveBeenCalledOnce();
     expect(spy).toHaveBeenCalledWith(params.page, params.pageSize, params.name);
   });
-  it.todo("should throw if repository throws", async () => {});
+
+  it("should throw when repository throws", async () => {
+    const { sut, studentRepository } = makeSut();
+
+    vi.spyOn(studentRepository, "list").mockRejectedValueOnce(new Error());
+
+    await expect(() => sut.execute(params)).rejects.toThrow();
+  });
 });
