@@ -1,9 +1,11 @@
 import { PasswordHasherAdapter, PostgresAdapter } from "@/adapters";
 import { JwtTokenAdapter } from "@/adapters/JwtTokenAdapter";
 import { SignInController, SignUpController } from "@/controllers/auth";
+import { RefreshTokenController } from "@/controllers/auth/RefreshTokenController";
 import { pool } from "@/db/db";
 import { StaffRepository } from "@/repositories";
 import { SignUpUseCase } from "@/useCases";
+import { RefreshTokenUseCase } from "@/useCases/auth/RefreshTokenUseCase";
 import { SignInUseCase } from "@/useCases/auth/SignInUseCase";
 
 const db = new PostgresAdapter(pool);
@@ -29,4 +31,16 @@ export function makeSignInController() {
   );
   const signInController = new SignInController(signInUseCase);
   return signInController;
+}
+
+export function makeRefreshTokenController() {
+  const jwtTokenAdapter = new JwtTokenAdapter();
+  const refreshTokenUseCase = new RefreshTokenUseCase(
+    jwtTokenAdapter,
+    staffRepository
+  );
+  const refreshTokenController = new RefreshTokenController(
+    refreshTokenUseCase
+  );
+  return refreshTokenController;
 }
