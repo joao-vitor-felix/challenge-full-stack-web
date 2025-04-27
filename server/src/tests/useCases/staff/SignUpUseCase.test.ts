@@ -1,10 +1,10 @@
 import { EmailAlreadyTakenError } from "@/errors";
-import { CreateStaffSchema } from "@/schemas";
+import { SignUpSchema } from "@/schemas";
 import { StaffRepositoryStub } from "@/tests/stubs/StaffRepositoryStub";
-import { CreateStaffUseCase } from "@/useCases";
+import { SignUpUseCase } from "@/useCases";
 import { faker } from "@faker-js/faker";
 
-describe("CreateStaffUseCase", () => {
+describe("SignUpUseCase", () => {
   class PasswordHasherStub {
     async hash(_password: string): Promise<string> {
       return Promise.resolve("hashedPassword");
@@ -21,7 +21,7 @@ describe("CreateStaffUseCase", () => {
   function makeSut() {
     const staffRepository = new StaffRepositoryStub();
     const passwordHasher = new PasswordHasherStub();
-    const sut = new CreateStaffUseCase(passwordHasher, staffRepository);
+    const sut = new SignUpUseCase(passwordHasher, staffRepository);
 
     return {
       staffRepository,
@@ -30,7 +30,7 @@ describe("CreateStaffUseCase", () => {
     };
   }
 
-  const staff: CreateStaffSchema = {
+  const staff: SignUpSchema = {
     name: faker.person.fullName(),
     email: faker.internet.email(),
     password: faker.internet.password({

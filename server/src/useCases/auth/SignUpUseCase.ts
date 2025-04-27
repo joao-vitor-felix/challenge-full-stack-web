@@ -1,15 +1,15 @@
 import { IPasswordHasher } from "@/adapters";
 import { EmailAlreadyTakenError } from "@/errors";
 import { IStaffRepository } from "@/repositories";
-import { CreateStaffSchema } from "@/schemas";
+import { SignUpSchema } from "@/schemas";
 
-export class CreateStaffUseCase {
+export class SignUpUseCase {
   constructor(
     private passwordHasher: IPasswordHasher,
     private staffRepository: IStaffRepository
   ) {}
 
-  async execute(params: CreateStaffSchema) {
+  async execute(params: SignUpSchema) {
     const staffWithProvidedEmail = await this.staffRepository.getByEmail(
       params.email
     );

@@ -1,12 +1,12 @@
 import { IDatabaseConnection } from "@/adapters";
-import { CreateStaffSchema } from "@/schemas/staff/createStaffSchema";
+import { SignUpSchema } from "@/schemas/auth/signUpSchema";
 import { Staff } from "@/types/Staff";
 import { IStaffRepository } from "./interfaces/IStaffRepository";
 
 export class StaffRepository implements IStaffRepository {
   constructor(private db: IDatabaseConnection) {}
 
-  async create(params: CreateStaffSchema): Promise<Staff> {
+  async create(params: SignUpSchema): Promise<Staff> {
     const [staff] = await this.db.query<Staff>(
       `insert into staff (name, email, hashed_password, role)
       values ($1, $2, $3, $4)

@@ -1,15 +1,15 @@
+import { SignUpController } from "@/controllers/auth";
 import { ErrorResponse } from "@/controllers/helpers/http";
-import { CreateStaffController } from "@/controllers/staff";
 import { EmailAlreadyTakenError } from "@/errors";
-import { CreateStaffSchema } from "@/schemas";
+import { SignUpSchema } from "@/schemas";
 import { Staff } from "@/types/Staff";
-import { CreateStaffUseCase } from "@/useCases";
+import { SignUpUseCase } from "@/useCases";
 import { faker } from "@faker-js/faker";
 import type { Request } from "express";
 
-describe("CreateStaffController", () => {
-  class CreateStaffUseCaseStub {
-    async execute(params: CreateStaffSchema): Promise<Staff> {
+describe("SignUpController", () => {
+  class SignUpUseCaseStub {
+    async execute(params: SignUpSchema): Promise<Staff> {
       return {
         id: faker.string.uuid(),
         name: params.name,
@@ -21,13 +21,12 @@ describe("CreateStaffController", () => {
   }
 
   function makeSut() {
-    const createStaffUseCase =
-      new CreateStaffUseCaseStub() as CreateStaffUseCase;
-    const sut = new CreateStaffController(createStaffUseCase);
-    return { sut, createStaffUseCase };
+    const signUpUseCase = new SignUpUseCaseStub() as SignUpUseCase;
+    const sut = new SignUpController(signUpUseCase);
+    return { sut, signUpUseCase };
   }
 
-  type HttpRequest = Request<any, any, CreateStaffSchema>;
+  type HttpRequest = Request<any, any, SignUpSchema>;
 
   const httpRequest = {
     body: {
@@ -56,8 +55,8 @@ describe("CreateStaffController", () => {
   });
 
   it("should call use case with correct param", async () => {
-    const { sut, createStaffUseCase } = makeSut();
-    const spy = vi.spyOn(createStaffUseCase, "execute");
+    const { sut, signUpUseCase } = makeSut();
+    const spy = vi.spyOn(signUpUseCase, "execute");
 
     await sut.execute(httpRequest);
 
@@ -162,8 +161,8 @@ describe("CreateStaffController", () => {
   );
 
   it("should return 409 when use case throws EmailAlreadyTakenError", async () => {
-    const { sut, createStaffUseCase } = makeSut();
-    vi.spyOn(createStaffUseCase, "execute").mockRejectedValueOnce(
+    const { sut, signUpUseCase } = makeSut();
+    vi.spyOn(signUpUseCase, "execute").mockRejectedValueOnce(
       new EmailAlreadyTakenError()
     );
 
@@ -175,8 +174,8 @@ describe("CreateStaffController", () => {
   });
 
   it("should return 500 when use case throws an unknown error", async () => {
-    const { sut, createStaffUseCase } = makeSut();
-    vi.spyOn(createStaffUseCase, "execute").mockRejectedValueOnce(new Error());
+    const { sut, signUpUseCase } = makeSut();
+    vi.spyOn(signUpUseCase, "execute").mockRejectedValueOnce(new Error());
 
     const response = (await sut.execute(httpRequest)) as ErrorResponse;
 

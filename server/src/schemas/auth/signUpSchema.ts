@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const createStaffSchema = z
+export const signUpSchema = z
   .object({
     name: z
       .string({
@@ -29,4 +29,4 @@ export const createStaffSchema = z
     message: "Some fields are not allowed"
   });
 
-export type CreateStaffSchema = z.infer<typeof createStaffSchema>;
+export type SignUpSchema = z.infer<typeof signUpSchema>;

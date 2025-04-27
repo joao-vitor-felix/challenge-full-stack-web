@@ -1,4 +1,4 @@
-export * from "./staff/CreateStaffUseCase";
+export * from "./auth/SignUpUseCase";
 export * from "./student/CreateStudentUseCase";
 export * from "./student/DeleteStudentUseCase";
 export * from "./student/ListStudentsUseCase";

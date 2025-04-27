@@ -1,18 +1,18 @@
 import { PasswordHasherAdapter, PostgresAdapter } from "@/adapters";
-import { CreateStaffController } from "@/controllers/staff";
+import { SignUpController } from "@/controllers/auth";
 import { pool } from "@/db/db";
 import { StaffRepository } from "@/repositories";
-import { CreateStaffUseCase } from "@/useCases";
+import { SignUpUseCase } from "@/useCases";
 
 const db = new PostgresAdapter(pool);
 const staffRepository = new StaffRepository(db);
 
-export function makeCreateStaffController() {
+export function makeSignUpController() {
   const passwordHasherAdapter = new PasswordHasherAdapter();
-  const createStaffUseCase = new CreateStaffUseCase(
+  const signUpUseCase = new SignUpUseCase(
     passwordHasherAdapter,
     staffRepository
   );
-  const createStaffController = new CreateStaffController(createStaffUseCase);
-  return createStaffController;
+  const signUpController = new SignUpController(signUpUseCase);
+  return signUpController;
 }

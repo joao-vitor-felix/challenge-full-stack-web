@@ -1,6 +1,6 @@
 import { EmailAlreadyTakenError } from "@/errors";
-import { createStaffSchema } from "@/schemas";
-import { CreateStaffUseCase } from "@/useCases";
+import { signUpSchema } from "@/schemas";
+import { SignUpUseCase } from "@/useCases";
 import type { Request } from "express";
 import { ZodError } from "zod";
 import {
@@ -10,13 +10,13 @@ import {
   invalidRequest
 } from "../helpers/http";
 
-export class CreateStaffController {
-  constructor(private createStaffUseCase: CreateStaffUseCase) {}
+export class SignUpController {
+  constructor(private signUpUseCase: SignUpUseCase) {}
 
   async execute(request: Request) {
     try {
-      const params = createStaffSchema.parse(request.body);
-      const staff = await this.createStaffUseCase.execute(params);
+      const params = signUpSchema.parse(request.body);
+      const staff = await this.signUpUseCase.execute(params);
       return created(staff);
     } catch (error) {
       if (error instanceof ZodError) {

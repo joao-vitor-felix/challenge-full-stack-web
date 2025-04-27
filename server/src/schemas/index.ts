@@ -1,4 +1,4 @@
-export * from "./staff/createStaffSchema";
+export * from "./auth/signUpSchema";
 export * from "./student/createStudentSchema";
 export * from "./student/deleteStudentSchema";
 export * from "./student/listStudentsSchema";
