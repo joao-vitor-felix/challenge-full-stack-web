@@ -1,13 +1,13 @@
-DROP TYPE IF EXISTS staff_role CASCADE;
+DROP DATABASE IF EXISTS college_app;
 
-DROP TABLE IF EXISTS students CASCADE;
+CREATE DATABASE college_app;
 
-DROP TABLE IF EXISTS staff CASCADE;
+\c college_app
 
 CREATE TYPE staff_role AS ENUM ('REGISTRAR', 'PROFESSOR');
 
 CREATE TABLE
-  IF NOT EXISTS students (
+  students (
     ra VARCHAR(11) PRIMARY KEY,
     cpf VARCHAR(11) UNIQUE NOT NULL,
     name VARCHAR(100) NOT NULL,
@@ -15,8 +15,8 @@ CREATE TABLE
   );
 
 CREATE TABLE
-  IF NOT EXISTS staff (
-    id VARCHAR(50) NOT NULL DEFAULT gen_random_uuid (),
+  staff (
+    id VARCHAR(50) PRIMARY KEY NOT NULL DEFAULT gen_random_uuid (),
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     hashed_password VARCHAR(100) NOT NULL,
