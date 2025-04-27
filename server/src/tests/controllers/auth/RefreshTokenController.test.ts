@@ -3,7 +3,7 @@ import { ErrorResponse } from "@/controllers/helpers/http";
 import { RefreshTokenUseCase } from "@/useCases/auth/RefreshTokenUseCase";
 import { faker } from "@faker-js/faker";
 import type { Request } from "express";
-import { TokenExpiredError } from "jsonwebtoken";
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 
 describe("RefreshTokenController", () => {
   const tokens = {
@@ -95,10 +95,18 @@ describe("RefreshTokenController", () => {
     expect(response.body.code).toBe("INVALID_REQUEST");
   });
 
-  it.todo(
-    "should return 400 when use case throws JsonWebTokenError",
-    async () => {}
-  );
+  it("should return 400 when use case throws JsonWebTokenError", async () => {
+    const { sut, refreshTokenUseCase } = makeSut();
+    vi.spyOn(refreshTokenUseCase, "execute").mockRejectedValueOnce(
+      new JsonWebTokenError("Invalid token")
+    );
+
+    const response = (await sut.execute(httpRequest)) as ErrorResponse;
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toMatch(/invalid/i);
+    expect(response.body.code).toBe("INVALID_REQUEST");
+  });
 
   it.todo(
     "should return 500 when use case throws an unknown error",
