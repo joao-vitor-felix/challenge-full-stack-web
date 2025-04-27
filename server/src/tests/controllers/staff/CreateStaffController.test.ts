@@ -33,7 +33,9 @@ describe("CreateStaffController", () => {
     body: {
       name: faker.person.fullName(),
       email: faker.internet.email(),
-      password: faker.internet.password(),
+      password: faker.internet.password({
+        length: 8
+      }),
       role: "REGISTRAR"
     }
   } as HttpRequest;
