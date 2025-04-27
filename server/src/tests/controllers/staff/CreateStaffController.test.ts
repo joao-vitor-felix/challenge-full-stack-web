@@ -1,5 +1,6 @@
 import { ErrorResponse } from "@/controllers/helpers/http";
 import { CreateStaffController } from "@/controllers/staff";
+import { EmailAlreadyTakenError } from "@/errors";
 import { CreateStaffSchema } from "@/schemas";
 import { Staff } from "@/types/Staff";
 import { CreateStaffUseCase } from "@/useCases";
@@ -158,10 +159,18 @@ describe("CreateStaffController", () => {
     }
   );
 
-  it.todo(
-    "should return 409 when use case throws EmailAlreadyTakenError",
-    async () => {}
-  );
+  it("should return 409 when use case throws EmailAlreadyTakenError", async () => {
+    const { sut, createStaffUseCase } = makeSut();
+    vi.spyOn(createStaffUseCase, "execute").mockRejectedValueOnce(
+      new EmailAlreadyTakenError()
+    );
+
+    const response = (await sut.execute(httpRequest)) as ErrorResponse;
+
+    expect(response.statusCode).toBe(409);
+    expect(response.body.message).toMatch(/already been taken/i);
+    expect(response.body.code).toBe("EMAIL_ALREADY_TAKEN");
+  });
 
   it.todo(
     "should return 500 when use case throws an unknown error",
