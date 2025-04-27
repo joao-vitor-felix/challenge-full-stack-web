@@ -12,7 +12,7 @@ export class RefreshTokenUseCase {
 
   async execute(token: string) {
     const { sub } = this.jwtTokenAdapter.verify(token, env.JWT_REFRESH_SECRET);
-    const staff = await this.staffRepository.getById(sub ?? "");
+    const staff = await this.staffRepository.getById(sub!);
 
     if (!staff) {
       throw new StaffNotFoundError();
