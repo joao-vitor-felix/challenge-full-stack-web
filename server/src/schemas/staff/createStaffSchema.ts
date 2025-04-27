@@ -20,7 +20,9 @@ export const createStaffSchema = z
       })
       .min(8, "password must have at least 8 characters"),
     role: z.enum(["REGISTRAR", "PROFESSOR"], {
-      errorMap: () => ({ message: "role must be either 'admin' or 'user'" })
+      errorMap: () => ({
+        message: "role must be either REGISTRAR OR PROFESSOR"
+      })
     })
   })
   .strict({
