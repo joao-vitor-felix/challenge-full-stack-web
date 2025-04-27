@@ -110,7 +110,14 @@ describe("SignUpUseCase", () => {
     await expect(promise).rejects.toThrow();
   });
 
-  it.todo("should throw if compare throws", async () => {});
+  it("should throw if compare throws", async () => {
+    const { sut, passwordHasherAdapter } = makeSut();
+    vi.spyOn(passwordHasherAdapter, "compare").mockRejectedValue(new Error());
+
+    const promise = sut.execute(params.email, params.password);
+
+    await expect(promise).rejects.toThrow();
+  });
 
   it.todo("should throw if sign throws", async () => {});
 });
