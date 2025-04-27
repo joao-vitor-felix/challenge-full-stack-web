@@ -98,5 +98,10 @@ describe("CreateStaffUseCase", () => {
     await expect(() => sut.execute(staff)).rejects.toThrow();
   });
 
-  it.todo("should throw when repository throws", async () => {});
+  it("should throw when repository throws", async () => {
+    const { sut, staffRepository } = makeSut();
+    vi.spyOn(staffRepository, "create").mockRejectedValueOnce(new Error());
+
+    await expect(() => sut.execute(staff)).rejects.toThrow();
+  });
 });
