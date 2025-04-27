@@ -42,6 +42,14 @@ describe("ListStudentsUseCase", () => {
     });
   });
 
-  it.todo("should call list with correct params", async () => {});
+  it("should call list with correct params", async () => {
+    const { sut, studentRepository } = makeSut();
+    const spy = vi.spyOn(studentRepository, "list");
+
+    await sut.execute(params);
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledWith(params.page, params.pageSize, params.name);
+  });
   it.todo("should throw if repository throws", async () => {});
 });
