@@ -1,3 +1,4 @@
+import { StaffNotFoundError } from "@/errors/staff";
 import { JwtTokenAdapterStub } from "@/tests/stubs/JwtTokenAdapterStub";
 import { PasswordHasherAdapterStub } from "@/tests/stubs/PasswordHasherStub";
 import { StaffRepositoryStub } from "@/tests/stubs/StaffRepositoryStub";
@@ -82,10 +83,14 @@ describe("SignUpUseCase", () => {
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
-  it.todo(
-    "should return StaffNotFoundError if a staff is not found",
-    async () => {}
-  );
+  it("should return StaffNotFoundError if a staff is not found", async () => {
+    const { sut, staffRepository } = makeSut();
+    vi.spyOn(staffRepository, "getByEmail").mockResolvedValue(null);
+
+    const promise = sut.execute(params.email, params.password);
+
+    await expect(promise).rejects.toBeInstanceOf(StaffNotFoundError);
+  });
   it.todo(
     "should return PasswordMismatchError if password doesn't match",
     async () => {}
