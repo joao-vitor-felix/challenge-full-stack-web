@@ -65,7 +65,21 @@ describe("RefreshTokenController", () => {
     expect(response.body.code).toBe("INVALID_REQUEST");
   });
 
-  it.todo("should return 400 when token is not a jwt", async () => {});
+  it("should return 400 when token is not a jwt", async () => {
+    const { sut } = makeSut();
+
+    const request = {
+      body: {
+        token: "1"
+      }
+    } as HttpRequest;
+
+    const response = (await sut.execute(request)) as ErrorResponse;
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toMatch(/invalid/i);
+    expect(response.body.code).toBe("INVALID_REQUEST");
+  });
 
   it.todo(
     "should return 400 when use case throws TokenExpiredError",
