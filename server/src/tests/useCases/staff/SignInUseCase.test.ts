@@ -1,4 +1,4 @@
-import { StaffNotFoundError } from "@/errors/staff";
+import { PasswordMismatchError, StaffNotFoundError } from "@/errors/staff";
 import { JwtTokenAdapterStub } from "@/tests/stubs/JwtTokenAdapterStub";
 import { PasswordHasherAdapterStub } from "@/tests/stubs/PasswordHasherStub";
 import { StaffRepositoryStub } from "@/tests/stubs/StaffRepositoryStub";
@@ -91,10 +91,15 @@ describe("SignUpUseCase", () => {
 
     await expect(promise).rejects.toBeInstanceOf(StaffNotFoundError);
   });
-  it.todo(
-    "should return PasswordMismatchError if password doesn't match",
-    async () => {}
-  );
+
+  it("should return PasswordMismatchError if password doesn't match", async () => {
+    const { sut, passwordHasherAdapter } = makeSut();
+    vi.spyOn(passwordHasherAdapter, "compare").mockResolvedValue(false);
+
+    const promise = sut.execute(params.email, params.password);
+
+    await expect(promise).rejects.toBeInstanceOf(PasswordMismatchError);
+  });
 
   it.todo("should throw if repository throws", async () => {});
 
