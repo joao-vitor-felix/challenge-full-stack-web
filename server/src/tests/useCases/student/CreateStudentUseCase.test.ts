@@ -47,7 +47,7 @@ describe("CreateStudentUseCase", () => {
     });
   });
 
-  it("should call createStudent with correct params", async () => {
+  it("should call create with correct params", async () => {
     const { sut, studentRepository } = makeSut();
     const spy = vi.spyOn(studentRepository, "create");
 
