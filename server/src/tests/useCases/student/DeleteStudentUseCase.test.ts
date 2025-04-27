@@ -42,4 +42,12 @@ describe("DeleteStudentUseCase", () => {
       StudentNotFoundError
     );
   });
+
+  it("should throw when repository throws", async () => {
+    const { sut, studentRepository } = makeSut();
+
+    vi.spyOn(studentRepository, "delete").mockRejectedValueOnce(new Error());
+
+    await expect(() => sut.execute(ra)).rejects.toThrow();
+  });
 });
