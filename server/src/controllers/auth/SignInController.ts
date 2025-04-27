@@ -16,11 +16,11 @@ export class SignInController {
   async execute(request: Request) {
     try {
       const params = signInSchema.parse(request.body);
-      const token = await this.signInUseCase.execute(
+      const tokens = await this.signInUseCase.execute(
         params.email,
         params.password
       );
-      return success(token);
+      return success(tokens);
     } catch (error) {
       if (error instanceof ZodError) {
         return badRequest(error.errors[0].message);
