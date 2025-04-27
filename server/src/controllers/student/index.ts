@@ -1,4 +1,4 @@
 export * from "./CreateStudentController";
 export * from "./DeleteStudentController";
-export * from "./ListStudentController";
+export * from "./ListStudentsController";
 export * from "./UpdateStudentController";
