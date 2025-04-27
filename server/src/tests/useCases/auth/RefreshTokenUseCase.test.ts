@@ -56,4 +56,13 @@ describe("RefreshTokenUseCase", () => {
       StaffNotFoundError
     );
   });
+
+  it("should throw if verify throws", async () => {
+    const { sut, jwtTokenAdapter } = makeSut();
+    vi.spyOn(jwtTokenAdapter, "verify").mockImplementationOnce(() => {
+      throw new Error("any_error");
+    });
+
+    await expect(sut.execute("valid_token")).rejects.toThrow();
+  });
 });
