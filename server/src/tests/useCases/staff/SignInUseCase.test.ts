@@ -42,7 +42,7 @@ describe("SignUpUseCase", () => {
 
   it("should return tokens successfully", async () => {
     const { sut, staffRepository } = makeSut();
-    vi.spyOn(staffRepository, "getByEmail").mockResolvedValue(staff);
+    vi.spyOn(staffRepository, "getByEmail").mockResolvedValueOnce(staff);
 
     const result = await sut.execute(params.email, params.password);
 
@@ -85,7 +85,7 @@ describe("SignUpUseCase", () => {
 
   it("should return StaffNotFoundError if a staff is not found", async () => {
     const { sut, staffRepository } = makeSut();
-    vi.spyOn(staffRepository, "getByEmail").mockResolvedValue(null);
+    vi.spyOn(staffRepository, "getByEmail").mockResolvedValueOnce(null);
 
     const promise = sut.execute(params.email, params.password);
 
@@ -94,7 +94,7 @@ describe("SignUpUseCase", () => {
 
   it("should return PasswordMismatchError if password doesn't match", async () => {
     const { sut, passwordHasherAdapter } = makeSut();
-    vi.spyOn(passwordHasherAdapter, "compare").mockResolvedValue(false);
+    vi.spyOn(passwordHasherAdapter, "compare").mockResolvedValueOnce(false);
 
     const promise = sut.execute(params.email, params.password);
 
@@ -103,7 +103,7 @@ describe("SignUpUseCase", () => {
 
   it("should throw if repository throws", async () => {
     const { sut, staffRepository } = makeSut();
-    vi.spyOn(staffRepository, "getByEmail").mockRejectedValue(new Error());
+    vi.spyOn(staffRepository, "getByEmail").mockRejectedValueOnce(new Error());
 
     const promise = sut.execute(params.email, params.password);
 
@@ -112,12 +112,23 @@ describe("SignUpUseCase", () => {
 
   it("should throw if compare throws", async () => {
     const { sut, passwordHasherAdapter } = makeSut();
-    vi.spyOn(passwordHasherAdapter, "compare").mockRejectedValue(new Error());
+    vi.spyOn(passwordHasherAdapter, "compare").mockRejectedValueOnce(
+      new Error()
+    );
 
     const promise = sut.execute(params.email, params.password);
 
     await expect(promise).rejects.toThrow();
   });
 
-  it.todo("should throw if sign throws", async () => {});
+  it("should throw if sign throws", async () => {
+    const { sut, jwtTokenAdapter } = makeSut();
+    vi.spyOn(jwtTokenAdapter, "sign").mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const promise = sut.execute(params.email, params.password);
+
+    await expect(promise).rejects.toThrow();
+  });
 });
