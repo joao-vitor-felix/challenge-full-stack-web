@@ -26,7 +26,18 @@ describe("RefreshTokenUseCase", () => {
     });
   });
 
-  it.todo("should call verify with correct params", async () => {});
+  it("should call verify with correct params", async () => {
+    const { sut, jwtTokenAdapter } = makeSut();
+    const spy = vi.spyOn(jwtTokenAdapter, "verify");
+
+    await sut.execute("valid_token");
+
+    const verifyTokenParameter = spy.mock.calls[0][0];
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(verifyTokenParameter).toBe("valid_token");
+  });
+
   it.todo("should call verify with correct params", async () => {});
   it.todo("should call verify with correct params", async () => {});
   it.todo("should call verify with correct params", async () => {});
