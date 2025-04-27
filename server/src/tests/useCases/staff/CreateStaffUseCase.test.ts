@@ -1,3 +1,4 @@
+import { EmailAlreadyTakenError } from "@/errors";
 import { CreateStaffSchema } from "@/schemas";
 import { StaffRepositoryStub } from "@/tests/stubs/StaffRepositoryStub";
 import { CreateStaffUseCase } from "@/useCases";
@@ -75,10 +76,20 @@ describe("CreateStaffUseCase", () => {
     });
   });
 
-  it.todo(
-    "should return EmailAlreadyTakenError when email is already in use",
-    async () => {}
-  );
+  it("should return EmailAlreadyTakenError when email is already in use", async () => {
+    const { sut, staffRepository } = makeSut();
+    vi.spyOn(staffRepository, "getByEmail").mockResolvedValueOnce({
+      id: faker.string.uuid(),
+      name: faker.person.fullName(),
+      email: staff.email,
+      hashedPassword: faker.string.nanoid(),
+      role: "REGISTRAR"
+    });
+
+    await expect(() => sut.execute(staff)).rejects.toBeInstanceOf(
+      EmailAlreadyTakenError
+    );
+  });
 
   it.todo("should throw when repository throws", async () => {});
 
