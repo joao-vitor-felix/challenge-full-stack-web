@@ -1,5 +1,6 @@
 import { RefreshTokenController } from "@/controllers/auth/RefreshTokenController";
 import { ErrorResponse } from "@/controllers/helpers/http";
+import { StaffNotFoundError } from "@/errors/staff";
 import { RefreshTokenUseCase } from "@/useCases/auth/RefreshTokenUseCase";
 import { faker } from "@faker-js/faker";
 import type { Request } from "express";
@@ -106,6 +107,19 @@ describe("RefreshTokenController", () => {
     expect(response.statusCode).toBe(400);
     expect(response.body.message).toMatch(/invalid/i);
     expect(response.body.code).toBe("INVALID_REQUEST");
+  });
+
+  it("should return 404 when use case throws StaffNotFoundError", async () => {
+    const { sut, refreshTokenUseCase } = makeSut();
+    vi.spyOn(refreshTokenUseCase, "execute").mockRejectedValueOnce(
+      new StaffNotFoundError()
+    );
+
+    const response = (await sut.execute(httpRequest)) as ErrorResponse;
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message).toMatch(/not found/i);
+    expect(response.body.code).toBe("STAFF_NOT_FOUND");
   });
 
   it("should return 500 when use case throws an unknown error", async () => {
