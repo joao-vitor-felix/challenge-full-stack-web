@@ -1,3 +1,4 @@
+import { ErrorResponse } from "@/controllers/helpers/http";
 import { CreateStaffController } from "@/controllers/staff";
 import { CreateStaffSchema } from "@/schemas";
 import { Staff } from "@/types/Staff";
@@ -61,7 +62,101 @@ describe("CreateStaffController", () => {
     expect(spy).toHaveBeenCalledWith(httpRequest.body);
   });
 
-  it.todo.each([])("should return 400 when $scenario", async () => {});
+  it.each([
+    {
+      scenario: "name is not a string",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          name: 1
+        }
+      },
+      errorMessage: /name must be a string/i
+    },
+    {
+      scenario: "name is invalid",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          name: ""
+        }
+      },
+      errorMessage: /name is required/i
+    },
+    {
+      scenario: "email is not a string",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          email: 1
+        }
+      },
+      errorMessage: /email must be a string/i
+    },
+    {
+      scenario: "email is invalid",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          email: "invalid-email"
+        }
+      },
+      errorMessage: /invalid email/i
+    },
+    {
+      scenario: "password is not a string",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          password: 1
+        }
+      },
+      errorMessage: /password must be a string/i
+    },
+    {
+      scenario: "password is less than 8 characters",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          password: "1234567"
+        }
+      },
+      errorMessage: /at least 8 characters/i
+    },
+    {
+      scenario: "role is invalid",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          role: "ADMIN"
+        }
+      },
+      errorMessage: /must be either REGISTRAR OR PROFESSOR/i
+    },
+    {
+      scenario: "a not allowed field is provided",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          extra: 1
+        }
+      },
+      errorMessage: /not allowed/i
+    }
+  ])(
+    "should return 400 when $scenario",
+    async ({ httpRequest, errorMessage }) => {
+      const { sut } = makeSut();
+
+      const response = (await sut.execute(
+        httpRequest as HttpRequest
+      )) as ErrorResponse;
+
+      expect(response.statusCode).toBe(400);
+      expect(response.body.message).toMatch(errorMessage);
+      expect(response.body.code).toBe("INVALID_REQUEST");
+    }
+  );
 
   it.todo(
     "should return 409 when use case throws EmailAlreadyTakenError",
