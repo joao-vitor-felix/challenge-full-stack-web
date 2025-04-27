@@ -14,11 +14,23 @@ export class StaffRepositoryStub implements IStaffRepository {
     });
   }
 
-  async getByEmail(_email: string): Promise<Staff | null> {
-    return Promise.resolve(null);
+  async getByEmail(email: string): Promise<Staff | null> {
+    return Promise.resolve({
+      id: faker.string.uuid(),
+      name: faker.person.fullName(),
+      email,
+      hashedPassword: "hashedPassword",
+      role: "REGISTRAR"
+    });
   }
 
-  async getById(_id: string): Promise<Staff | null> {
-    return Promise.resolve(null);
+  async getById(id: string): Promise<Staff | null> {
+    return Promise.resolve({
+      id,
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      hashedPassword: "hashedPassword",
+      role: "REGISTRAR"
+    });
   }
 }

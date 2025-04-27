@@ -28,7 +28,8 @@ describe("SignUpUseCase", () => {
   };
 
   it("should create a staff successfully", async () => {
-    const { sut } = makeSut();
+    const { sut, staffRepository } = makeSut();
+    vi.spyOn(staffRepository, "getByEmail").mockResolvedValue(null);
 
     const result = await sut.execute(staff);
 
@@ -42,8 +43,9 @@ describe("SignUpUseCase", () => {
   });
 
   it("should call hash with correct params", async () => {
-    const { sut, passwordHasherAdapter } = makeSut();
+    const { sut, passwordHasherAdapter, staffRepository } = makeSut();
     const hashSpy = vi.spyOn(passwordHasherAdapter, "hash");
+    vi.spyOn(staffRepository, "getByEmail").mockResolvedValue(null);
 
     await sut.execute(staff);
 
@@ -54,6 +56,7 @@ describe("SignUpUseCase", () => {
   it("should call create with correct params", async () => {
     const { sut, staffRepository } = makeSut();
     const createSpy = vi.spyOn(staffRepository, "create");
+    vi.spyOn(staffRepository, "getByEmail").mockResolvedValue(null);
 
     await sut.execute(staff);
 
@@ -66,13 +69,7 @@ describe("SignUpUseCase", () => {
 
   it("should return EmailAlreadyTakenError when email is already in use", async () => {
     const { sut, staffRepository } = makeSut();
-    vi.spyOn(staffRepository, "getByEmail").mockResolvedValueOnce({
-      id: faker.string.uuid(),
-      name: faker.person.fullName(),
-      email: staff.email,
-      hashedPassword: faker.string.nanoid(),
-      role: "REGISTRAR"
-    });
+    vi.spyOn(staffRepository, "getByEmail");
 
     await expect(() => sut.execute(staff)).rejects.toBeInstanceOf(
       EmailAlreadyTakenError
