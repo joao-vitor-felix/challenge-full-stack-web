@@ -1,19 +1,21 @@
 import { sign, SignOptions, verify } from "jsonwebtoken";
-import { IJwtToken } from "./interfaces/IJwtToken";
+import { DecodedToken, IJwtToken } from "./interfaces/IJwtToken";
 
 export class JwtTokenAdapter implements IJwtToken {
   sign<T = undefined>(
-    payload: string | Buffer | object,
+    payload: object,
     secretOrPrivateKey: string,
-    options?: T
+    options?: T extends undefined ? undefined : SignOptions
   ): string {
-    return sign(payload, secretOrPrivateKey, options as SignOptions);
+    return sign(payload, secretOrPrivateKey, options);
   }
+
   verify<T = undefined>(
     token: string,
     secretOrPublicKey: string,
-    options?: T
-  ): string | object | Buffer {
-    return verify(token, secretOrPublicKey, options as SignOptions);
+    options?: T extends undefined ? undefined : SignOptions
+  ): DecodedToken {
+    const decoded = verify(token, secretOrPublicKey, options);
+    return decoded as DecodedToken;
   }
 }

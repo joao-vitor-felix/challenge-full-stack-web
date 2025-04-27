@@ -1,6 +1,6 @@
 export interface IJwtToken {
   sign<T = undefined>(
-    payload: string | Buffer | object,
+    payload: object,
     secretOrPrivateKey: string,
     options?: T
   ): string;
@@ -8,5 +8,12 @@ export interface IJwtToken {
     token: string,
     secretOrPublicKey: string,
     options?: T
-  ): string | object | Buffer;
+  ): DecodedToken;
 }
+
+export type DecodedToken = {
+  sub?: string;
+  exp?: number;
+  iat?: number;
+  [key: string]: any;
+};
