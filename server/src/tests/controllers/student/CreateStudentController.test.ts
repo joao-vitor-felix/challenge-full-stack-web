@@ -1,5 +1,6 @@
 import { ErrorResponse } from "@/controllers/helpers/http";
 import { CreateStudentController } from "@/controllers/student/CreateStudentController";
+import { RaAlreadyTakenError } from "@/errors";
 import { CreateStudentSchema } from "@/schemas/student/createStudentSchema";
 import { CreateStudentUseCase } from "@/useCases/student/CreateStudentUseCase";
 import { faker } from "@faker-js/faker";
@@ -173,7 +174,17 @@ describe("CreateStudentController", () => {
     }
   );
 
-  //TODO: add tests for the errors
+  it("should return 409 when use cases throws RaAlreadyTakenError", async () => {
+    const { sut, createStudentUseCase } = makeSut();
+    vi.spyOn(createStudentUseCase, "execute").mockRejectedValueOnce(
+      new RaAlreadyTakenError()
+    );
+
+    const response = (await sut.execute(httpRequest)) as ErrorResponse;
+    expect(response.statusCode).toBe(409);
+    expect(response.body.message).toMatch(/already exists/i);
+    expect(response.body.code).toBe("RA_ALREADY_TAKEN");
+  });
 
   it("should return 500 when use cases throws an unknown error", async () => {
     const { sut, createStudentUseCase } = makeSut();
