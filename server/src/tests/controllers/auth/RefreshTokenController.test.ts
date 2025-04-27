@@ -3,6 +3,7 @@ import { ErrorResponse } from "@/controllers/helpers/http";
 import { RefreshTokenUseCase } from "@/useCases/auth/RefreshTokenUseCase";
 import { faker } from "@faker-js/faker";
 import type { Request } from "express";
+import { TokenExpiredError } from "jsonwebtoken";
 
 describe("RefreshTokenController", () => {
   const tokens = {
@@ -81,10 +82,18 @@ describe("RefreshTokenController", () => {
     expect(response.body.code).toBe("INVALID_REQUEST");
   });
 
-  it.todo(
-    "should return 400 when use case throws TokenExpiredError",
-    async () => {}
-  );
+  it("should return 400 when use case throws TokenExpiredError", async () => {
+    const { sut, refreshTokenUseCase } = makeSut();
+    vi.spyOn(refreshTokenUseCase, "execute").mockRejectedValueOnce(
+      new TokenExpiredError("Token expired", new Date())
+    );
+
+    const response = (await sut.execute(httpRequest)) as ErrorResponse;
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toMatch(/expired/i);
+    expect(response.body.code).toBe("INVALID_REQUEST");
+  });
 
   it.todo(
     "should return 400 when use case throws JsonWebTokenError",
