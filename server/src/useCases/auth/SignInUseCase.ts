@@ -45,8 +45,8 @@ export class SignInUseCase {
       env.JWT_REFRESH_SECRET,
       {
         algorithm: "HS256",
-        subject: staff.id,
-        expiresIn: "7d"
+        expiresIn: "7d",
+        subject: staff.id
       }
     );
 
