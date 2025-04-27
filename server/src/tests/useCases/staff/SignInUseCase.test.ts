@@ -63,7 +63,15 @@ describe("SignUpUseCase", () => {
     expect(spy).toHaveBeenCalledWith(params.email);
   });
 
-  it.todo("should call compare with correct params", async () => {});
+  it("should call compare with correct params", async () => {
+    const { sut, passwordHasherAdapter } = makeSut();
+    const spy = vi.spyOn(passwordHasherAdapter, "compare");
+
+    await sut.execute(params.email, params.password);
+
+    expect(spy).toHaveBeenCalledOnce();
+    expect(spy).toHaveBeenCalledWith(params.password, staff.hashedPassword);
+  });
 
   it.todo("should call sign with correct params", async () => {});
 
