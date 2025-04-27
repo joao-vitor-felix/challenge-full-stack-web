@@ -21,6 +21,7 @@ describe("CreateStaffUseCase", () => {
     const staffRepository = new StaffRepositoryStub();
     const passwordHasher = new PasswordHasherStub();
     const sut = new CreateStaffUseCase(passwordHasher, staffRepository);
+
     return {
       staffRepository,
       passwordHasher,
@@ -51,6 +52,16 @@ describe("CreateStaffUseCase", () => {
     });
   });
 
+  it("should call hash with correct params", async () => {
+    const { sut, passwordHasher } = makeSut();
+    const hashSpy = vi.spyOn(passwordHasher, "hash");
+
+    await sut.execute(staff);
+
+    expect(hashSpy).toHaveBeenCalledOnce();
+    expect(hashSpy).toHaveBeenCalledWith(staff.password);
+  });
+
   it.todo("should call create with correct params", async () => {});
 
   it.todo(
@@ -58,5 +69,7 @@ describe("CreateStaffUseCase", () => {
     async () => {}
   );
 
-  it.todo("should throw if repository throws", async () => {});
+  it.todo("should throw when repository throws", async () => {});
+
+  it.todo("should throw when passwordHasher throws", async () => {});
 });
