@@ -1,12 +1,24 @@
 import { env } from "@/helpers/env";
 import cors from "cors";
 import express from "express";
+import { rateLimit } from "express-rate-limit";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { authRouter } from "./routes/auth";
 import { studentsRouter } from "./routes/student";
 
 const app = express();
 
+const FIFTEEN_MINUTES = 15 * 60 * 1000;
+
+const limiter = rateLimit({
+  windowMs: FIFTEEN_MINUTES,
+  max: 100,
+  message: JSON.stringify({
+    message: "Too many requests, please try again later."
+  })
+});
+
+app.use(limiter);
 app.use(cors());
 app.use(express.json());
 
