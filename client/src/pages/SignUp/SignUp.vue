@@ -58,6 +58,11 @@ const form = useForm({
     <v-card class="pa-5" width="500px">
       <Logo />
       <v-card-title class="text-subtitle-1">Cadastre-se para acessar a plataforma</v-card-title>
+      <div class="ps-4 text-subtitle-2">
+        <span> Já tem uma conta? </span>
+        <RouterLink to="/sign-in" class="text-secondary font-weight-bold">Entre aqui</RouterLink>
+      </div>
+
       <v-card-text>
         <form @submit.prevent.stop="form.handleSubmit" class="d-flex flex-column ga-2">
           <form.Field name="name">
@@ -137,7 +142,7 @@ const form = useForm({
             </template>
           </form.Field>
 
-          <v-btn class="align-self-center" color="secondary" type="submit">Cadastrar</v-btn>
+          <v-btn class="align-self-center w-100" color="secondary" type="submit">Cadastrar</v-btn>
         </form>
       </v-card-text>
     </v-card>
