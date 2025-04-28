@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Logo from "@/components/Logo.vue";
+import { authStore } from "@/store/authStore";
 import { useForm } from "@tanstack/vue-form";
 import { ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
@@ -29,6 +30,9 @@ const form = useForm({
       },
       {
         onSuccess: data => {
+          localStorage.setItem("access_token", data.accessToken);
+          localStorage.setItem("refresh_token", data.refreshToken);
+          authStore.isAuthenticated = true;
           router.push("/");
         },
         onError: () => {
@@ -85,7 +89,7 @@ const form = useForm({
             >
           </div>
 
-          <v-btn class="align-self-center" color="primary" type="submit">Entrar</v-btn>
+          <v-btn class="align-self-center w-100" color="primary" type="submit">Entrar</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
