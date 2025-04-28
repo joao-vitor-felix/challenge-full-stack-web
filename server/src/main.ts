@@ -2,6 +2,7 @@ import { env } from "@/helpers/env";
 import cors from "cors";
 import express from "express";
 import { rateLimit } from "express-rate-limit";
+import morgan from "morgan";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { authRouter } from "./routes/auth";
 import { studentsRouter } from "./routes/student";
@@ -19,6 +20,13 @@ const limiter = rateLimit({
 });
 
 app.use(limiter);
+app.use(
+  morgan("combined", {
+    skip: function (_req, res) {
+      return res.statusCode < 400;
+    }
+  })
+);
 app.use(cors());
 app.use(express.json());
 
