@@ -30,9 +30,7 @@ const form = useForm({
       },
       {
         onSuccess: data => {
-          localStorage.setItem("access_token", data.accessToken);
-          localStorage.setItem("refresh_token", data.refreshToken);
-          authStore.isAuthenticated = true;
+          authStore.login(data.accessToken, data.refreshToken);
           router.push("/");
         },
         onError: () => {
