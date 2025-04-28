@@ -16,4 +16,14 @@ export class AuthService {
     );
     return data;
   }
+
+  static async refreshToken(token: string) {
+    const { data } = await api.post<{ accessToken: string; refreshToken: string }>(
+      "/auth/refresh-token",
+      {
+        token
+      }
+    );
+    return data;
+  }
 }
