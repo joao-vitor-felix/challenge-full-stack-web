@@ -16,7 +16,9 @@ export const vuetify = createVuetify({
           primaryLight: "#e67e95",
           secondary: "#47B3B7",
           accent: "#C1BCBD",
-          accentLight: "#c1bcbd"
+          accentLight: "#c1bcbd",
+          white: "#fff",
+          black: "#000"
         }
       }
     }
