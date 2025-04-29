@@ -17,17 +17,17 @@ function handleLogout() {
   <v-navigation-drawer mobile-breakpoint="sm">
     <Logo />
     <div class="d-flex align-center">
-      <span class="w-100 text-center font-weight-bold text-primary">Módulo acadêmico</span>
+      <span class="w-100 text-center font-weight-bold">Módulo acadêmico</span>
     </div>
     <v-list>
-      <v-list-item prepend-icon="mdi-account" :active="isActive" active-color="primaryLight"
+      <v-list-item prepend-icon="mdi-account" :active="isActive" active-color="secondary"
         >Alunos</v-list-item
       >
     </v-list>
 
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block color="accentLight" @click="handleLogout">Sair</v-btn>
+        <v-btn block color="black" @click="handleLogout">Sair</v-btn>
       </div>
     </template>
   </v-navigation-drawer>
