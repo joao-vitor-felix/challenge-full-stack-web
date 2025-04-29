@@ -2,6 +2,7 @@
 import { studentsTableHeaders } from "@/utils/studentsTableHeaders";
 import { ref } from "vue";
 import { useListStudents } from "../composables/useListStudents";
+import TableActions from "./TableActions.vue";
 
 const page = ref(1);
 const pageSize = ref(2);
@@ -57,6 +58,10 @@ const isEmptyResponse = !isLoading && !isFetching && !isError && !response.value
       :loading="isLoading || isFetching"
       loading-text=""
     >
+      <template v-slot:[`item.actions`]="{ item }">
+        <TableActions :ra="item.ra" :name="item.name" />
+      </template>
+
       <template v-slot:loader>
         <v-skeleton-loader type="table-tbody" class="pt-2"></v-skeleton-loader>
       </template>
