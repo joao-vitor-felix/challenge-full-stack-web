@@ -12,4 +12,8 @@ export class StudentService {
     const { data } = await api.get<ListStudentsResponse>(url);
     return data;
   }
+
+  static async delete(ra: string) {
+    await api.delete(`/students/${ra}`);
+  }
 }
