@@ -98,7 +98,7 @@ const isCreateDialogOpen = ref(false);
     </v-data-table>
 
     <div class="d-flex ga-4 flex-column justify-center w-33 align-self-center" v-else>
-      <v-alert type="error" color="primary" icon="mdi-alert-circle-outline">
+      <v-alert type="error" color="primary" icon="mdi-alert-circle-outline" density="compact">
         <p class="text-center">Erro ao carregar os alunos</p>
       </v-alert>
       <v-btn @click="handleSearch">Tentar novamente</v-btn>
