@@ -2,6 +2,7 @@
 import { useCreateStudent } from "@/composables/useCreateStudent";
 import { createStudentSchema, type CreateStudentSchema } from "@/schemas/createStudentSchema";
 import { errorMessageMap } from "@/types/Error";
+import { maskInput } from "@/utils/maskInput";
 import { useForm } from "@tanstack/vue-form";
 import { useQueryClient } from "@tanstack/vue-query";
 import { onUnmounted } from "vue";
@@ -26,30 +27,36 @@ const form = useForm({
     onSubmit: createStudentSchema
   },
   onSubmit: async ({ value, formApi }) => {
-    mutation.mutate(value, {
-      onSuccess: () => {
-        closeDialog();
-        queryClient.invalidateQueries({
-          queryKey: ["students"]
-        });
-        formApi.reset();
-        toast.success("Cadastro realizado!");
+    mutation.mutate(
+      {
+        ...value,
+        cpf: value.cpf.replace(/\D/g, "")
       },
-      onError: ({ response }) => {
-        const code = response?.data.code;
+      {
+        onSuccess: () => {
+          closeDialog();
+          queryClient.invalidateQueries({
+            queryKey: ["students"]
+          });
+          formApi.reset();
+          toast.success("Cadastro realizado!");
+        },
+        onError: ({ response }) => {
+          const code = response?.data.code;
 
-        if (
-          code === "EMAIL_ALREADY_TAKEN" ||
-          code === "RA_ALREADY_TAKEN" ||
-          code === "CPF_ALREADY_TAKEN"
-        ) {
-          toast.error(errorMessageMap[code]);
-          return;
+          if (
+            code === "EMAIL_ALREADY_TAKEN" ||
+            code === "RA_ALREADY_TAKEN" ||
+            code === "CPF_ALREADY_TAKEN"
+          ) {
+            toast.error(errorMessageMap[code]);
+            return;
+          }
+
+          toast.error(errorMessageMap["INTERNAL_SERVER_ERROR"]);
         }
-
-        toast.error(errorMessageMap["INTERNAL_SERVER_ERROR"]);
       }
-    });
+    );
   }
 });
 
@@ -82,6 +89,7 @@ onUnmounted(() => {
                 :error-messages="state.meta.errors[0]?.message"
                 label="RA"
                 placeholder="Digite o RA"
+                maxlength="11"
               />
             </template>
           </form.Field>
@@ -91,11 +99,17 @@ onUnmounted(() => {
               <v-text-field
                 :name="field.name"
                 :model-value="field.state.value"
-                @update:modelValue="field.handleChange"
+                @update:modelValue="
+                  text => {
+                    const masked = maskInput(text, '###.###.###-##');
+                    field.handleChange(masked);
+                  }
+                "
                 @blur="field.handleBlur"
                 :error-messages="state.meta.errors[0]?.message"
                 label="CPF"
                 placeholder="Digite o CPF"
+                maxlength="14"
               />
             </template>
           </form.Field>

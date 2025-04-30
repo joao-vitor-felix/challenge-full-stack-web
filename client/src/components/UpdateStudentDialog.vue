@@ -3,6 +3,7 @@ import { useUpdateStudent } from "@/composables/useUpdateStudent";
 import { updateStudentSchema, type UpdateStudentSchema } from "@/schemas/updateStudentSchema";
 import { errorMessageMap } from "@/types/Error";
 import type { Student } from "@/types/Student";
+import { maskInput } from "@/utils/maskInput";
 import { useForm } from "@tanstack/vue-form";
 import { useQueryClient } from "@tanstack/vue-query";
 import { onUnmounted, ref } from "vue";
@@ -82,7 +83,11 @@ onUnmounted(() => {
       <v-card-text>
         <v-form @submit.prevent.stop="form.handleSubmit" class="d-flex flex-column ga-2">
           <v-text-field v-model="student.ra" disabled label="RA" />
-          <v-text-field v-model="student.cpf" disabled label="CPF" />
+          <v-text-field
+            :model-value="maskInput(student.cpf, '###.###.###-##')"
+            label="CPF"
+            disabled
+          />
 
           <form.Field name="name">
             <template v-slot="{ field, state }">

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CreateStudentDialog from "@/components/CreateStudentDialog.vue";
+import { maskInput } from "@/utils/maskInput";
 import { studentsTableHeaders } from "@/utils/studentsTableHeaders";
 import { computed, ref } from "vue";
 import { useListStudents } from "../composables/useListStudents";
@@ -43,6 +44,7 @@ const isCreateDialogOpen = ref(false);
           hide-details
           v-model="search"
           @keyup.enter="handleSearch"
+          clearable
         />
         <v-btn width="w-100" color="black" append-icon="mdi-magnify" @click="handleSearch"
           >Pesquisar</v-btn
@@ -70,6 +72,10 @@ const isCreateDialogOpen = ref(false);
       :loading="isLoading || isFetching"
       loading-text=""
     >
+      <template v-slot:[`item.cpf`]="{ item }">
+        <span>{{ maskInput(item.cpf, "###.###.###-##") }}</span>
+      </template>
+
       <template v-slot:[`item.actions`]="{ item }">
         <TableActions :student="item" />
       </template>
