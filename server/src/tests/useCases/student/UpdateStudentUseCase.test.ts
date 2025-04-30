@@ -1,4 +1,4 @@
-import { StudentNotFoundError } from "@/errors/student";
+import { EmailAlreadyTakenError, StudentNotFoundError } from "@/errors/student";
 import { UpdateStudentSchema } from "@/schemas";
 import { StudentRepositoryStub } from "@/tests/stubs/StudentRepositoryStub";
 import { Student } from "@/types/Student";
@@ -22,7 +22,8 @@ describe("UpdateStudentUseCase", () => {
   };
 
   it("should return updated user successfully", async () => {
-    const { sut } = makeSut();
+    const { sut, studentRepository } = makeSut();
+    vi.spyOn(studentRepository, "findByEmail").mockResolvedValueOnce(null);
 
     const student = await sut.execute(ra, params);
 
@@ -36,6 +37,7 @@ describe("UpdateStudentUseCase", () => {
 
   it("should call update with correct params", async () => {
     const { sut, studentRepository } = makeSut();
+    vi.spyOn(studentRepository, "findByEmail").mockResolvedValueOnce(null);
     const spy = vi.spyOn(studentRepository, "update");
 
     await sut.execute(ra, params);
@@ -44,11 +46,20 @@ describe("UpdateStudentUseCase", () => {
     expect(spy).toHaveBeenCalledWith(ra, params);
   });
 
-  it("should throw StudentNotFoundError if no student is returned", async () => {
+  it("should throw EmailAlreadyTakenError if student with provided email is found", async () => {
+    const { sut } = makeSut();
+
+    await expect(sut.execute(ra, params)).rejects.toBeInstanceOf(
+      EmailAlreadyTakenError
+    );
+  });
+
+  it("should throw StudentNotFoundError if no student is returned from update", async () => {
     const { sut, studentRepository } = makeSut();
+    vi.spyOn(studentRepository, "findByEmail").mockResolvedValueOnce(null);
     vi.spyOn(studentRepository, "update").mockResolvedValueOnce(null);
 
-    await expect(() => sut.execute(ra, params)).rejects.toBeInstanceOf(
+    await expect(sut.execute(ra, params)).rejects.toBeInstanceOf(
       StudentNotFoundError
     );
   });
