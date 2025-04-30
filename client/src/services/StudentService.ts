@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import type { CreateStudentSchema } from "@/schemas/createStudentDialog";
+import type { CreateStudentSchema } from "@/schemas/createStudentSchema";
 import type { ListStudentsResponse, Student } from "@/types/Student";
 
 export class StudentService {

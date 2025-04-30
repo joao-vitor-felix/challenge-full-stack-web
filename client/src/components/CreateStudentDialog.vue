@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCreateStudent } from "@/composables/useCreateStudent";
-import { createStudentSchema, type CreateStudentSchema } from "@/schemas/createStudentDialog";
+import { createStudentSchema, type CreateStudentSchema } from "@/schemas/createStudentSchema";
 import { useForm } from "@tanstack/vue-form";
 import { useQueryClient } from "@tanstack/vue-query";
 import { onUnmounted } from "vue";
