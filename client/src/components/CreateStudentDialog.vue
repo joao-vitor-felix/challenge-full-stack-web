@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useCreateStudent } from "@/composables/useCreateStudent";
 import { createStudentSchema, type CreateStudentSchema } from "@/schemas/createStudentSchema";
+import { errorMessageMap } from "@/types/Error";
 import { useForm } from "@tanstack/vue-form";
 import { useQueryClient } from "@tanstack/vue-query";
 import { onUnmounted } from "vue";
+import { toast } from "vue3-toastify";
 
 defineProps<{
   isOpen: boolean;
@@ -31,10 +33,21 @@ const form = useForm({
           queryKey: ["students"]
         });
         formApi.reset();
-        //TODO: add toast
+        toast.success("Cadastro realizado!");
       },
-      onError: () => {
-        //TODO: add toast
+      onError: ({ response }) => {
+        const code = response?.data.code;
+
+        if (
+          code === "EMAIL_ALREADY_TAKEN" ||
+          code === "RA_ALREADY_TAKEN" ||
+          code === "CPF_ALREADY_TAKEN"
+        ) {
+          toast.error(errorMessageMap[code]);
+          return;
+        }
+
+        toast.error(errorMessageMap["INTERNAL_SERVER_ERROR"]);
       }
     });
   }

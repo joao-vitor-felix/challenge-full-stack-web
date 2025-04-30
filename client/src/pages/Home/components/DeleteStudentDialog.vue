@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useQueryClient } from "@tanstack/vue-query";
+import { toast } from "vue3-toastify";
 import { useDeleteStudent } from "../composables/useDeleteStudent";
 
 const props = defineProps<{
@@ -16,14 +17,14 @@ const queryClient = useQueryClient();
 function handleDeleteStudent() {
   mutation.mutate(props.ra, {
     onSuccess: () => {
-      emit("update:isOpen", false);
-      //TODO: add toast
+      closeDialog();
       queryClient.invalidateQueries({
         queryKey: ["students"]
       });
+      toast.success("Aluno deletado!");
     },
     onError: () => {
-      //TODO: add toast
+      toast.error("Falha ao deletar aluno, tente novamente.");
     }
   });
 }

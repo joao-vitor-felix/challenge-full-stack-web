@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import Logo from "@/components/Logo.vue";
 import { ROLES } from "@/constants/ROLES";
+import { errorMessageMap } from "@/types/Error";
 import { useForm } from "@tanstack/vue-form";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
 import { useSignUp } from "./composables/useSignUp";
 import { type SignUpSchema, signUpSchema } from "./schemas/signUpSchema";
 
@@ -41,11 +43,17 @@ const form = useForm({
       },
       {
         onSuccess: data => {
-          //TODO: add toast
           router.push(`/sign-in?email=${data.email}`);
+          toast.success("Cadastro realizado! Você já pode acessar sua conta.");
         },
-        onError: () => {
-          //TODO: add toast
+        onError: ({ response }) => {
+          const code = response?.data.code;
+          if (code === "EMAIL_ALREADY_TAKEN") {
+            toast.error(errorMessageMap[code]);
+            return;
+          }
+
+          toast.error(errorMessageMap["INTERNAL_SERVER_ERROR"]);
         }
       }
     );

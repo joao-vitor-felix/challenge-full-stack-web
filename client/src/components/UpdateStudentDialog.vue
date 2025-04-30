@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useUpdateStudent } from "@/composables/useUpdateStudent";
 import { updateStudentSchema, type UpdateStudentSchema } from "@/schemas/updateStudentSchema";
+import { errorMessageMap } from "@/types/Error";
 import type { Student } from "@/types/Student";
 import { useForm } from "@tanstack/vue-form";
 import { useQueryClient } from "@tanstack/vue-query";
 import { onUnmounted, ref } from "vue";
+import { toast } from "vue3-toastify";
 
 const props = defineProps<{
   student: Student;
@@ -43,10 +45,17 @@ const form = useForm({
             queryKey: ["students"]
           });
           formApi.reset();
-          //TODO: add toast
+          toast.success("Aluno atualizado!");
         },
-        onError: () => {
-          //TODO: add toast
+        onError: ({ response }) => {
+          const code = response?.data.code;
+
+          if (code === "EMAIL_ALREADY_TAKEN") {
+            toast.error(errorMessageMap[code]);
+            return;
+          }
+
+          toast.error(errorMessageMap["INTERNAL_SERVER_ERROR"]);
         }
       }
     );

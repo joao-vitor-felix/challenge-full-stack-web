@@ -1,22 +1,25 @@
 <script setup lang="ts">
 import Logo from "@/components/Logo.vue";
 import { authStore } from "@/store/authStore";
+import { errorMessageMap } from "@/types/Error";
 import { useForm } from "@tanstack/vue-form";
 import { ref } from "vue";
-import { RouterLink, useRouter } from "vue-router";
+import { RouterLink, useRoute, useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
 import { useSignIn } from "./composables/useSignIn";
 import { signInSchema, type SignInSchema } from "./schemas/signInSchema";
 
 const isPasswordVisible = ref(false);
 const { mutate } = useSignIn();
 const router = useRouter();
+const route = useRoute();
 
 function togglePasswordVisibility() {
   isPasswordVisible.value = !isPasswordVisible.value;
 }
 const form = useForm({
   defaultValues: {
-    email: "",
+    email: route.query.email || "",
     password: ""
   } as SignInSchema,
   validators: {
@@ -33,8 +36,15 @@ const form = useForm({
           authStore.login(data.accessToken, data.refreshToken);
           router.push("/");
         },
-        onError: () => {
-          //TODO: add toast
+        onError: ({ response }) => {
+          const code = response?.data.code;
+
+          if (code === "PASSWORD_MISMATCH" || code === "STAFF_NOT_FOUND") {
+            toast.error(errorMessageMap[code]);
+            return;
+          }
+
+          toast.error(errorMessageMap["INTERNAL_SERVER_ERROR"]);
         }
       }
     );
