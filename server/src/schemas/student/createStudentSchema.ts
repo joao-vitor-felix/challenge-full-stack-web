@@ -7,13 +7,19 @@ export const createStudentSchema = z
         message: "ra must be a string"
       })
       .min(11, "ra must contain 11 characters")
-      .max(11, "ra must contain 11 characters"),
+      .max(11, "ra must contain 11 characters")
+      .refine(val => !isNaN(Number(val)), {
+        message: "ra must be numeric"
+      }),
     cpf: z
       .string({
         message: "cpf must be a string"
       })
       .min(11, "cpf must contain 11 characters")
-      .max(11, "cpf must contain 11 characters"),
+      .max(11, "cpf must contain 11 characters")
+      .refine(val => !isNaN(Number(val)), {
+        message: "cpf must be numeric"
+      }),
     name: z
       .string({
         message: "name must be a string"
