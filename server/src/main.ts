@@ -5,6 +5,7 @@ import { rateLimit } from "express-rate-limit";
 import morgan from "morgan";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { authRouter } from "./routes/auth";
+import { staffRouter } from "./routes/staff";
 import { studentsRouter } from "./routes/student";
 
 const app = express();
@@ -32,6 +33,7 @@ app.use(express.json());
 
 app.use("/auth", authRouter);
 app.use("/students", authMiddleware, studentsRouter);
+app.use("/staff", authMiddleware, staffRouter);
 
 app.listen(env.PORT, () => {
   console.log(`Server is running on port ${env.PORT}`);
