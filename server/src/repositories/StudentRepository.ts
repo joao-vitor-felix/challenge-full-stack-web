@@ -50,6 +50,15 @@ export class StudentRepository implements IStudentRepository {
     return student[0];
   }
 
+  async findByEmail(ra: string): Promise<Student | null> {
+    const [student] = await this.db.query<Student>(
+      `select * from students where ra = $1`,
+      [ra]
+    );
+
+    return student ?? null;
+  }
+
   async update(
     ra: string,
     params: UpdateStudentSchema
