@@ -1,10 +1,11 @@
-import { StudentNotFoundError } from "@/errors/student";
+import { EmailAlreadyTakenError, StudentNotFoundError } from "@/errors/student";
 import { updateStudentParamsSchema, updateStudentSchema } from "@/schemas";
 import { UpdateStudentUseCase } from "@/useCases/student/UpdateStudentUseCase";
 import type { Request } from "express";
 import { ZodError } from "zod";
 import {
   badRequest,
+  conflict,
   internalServerError,
   notFound,
   success
@@ -26,6 +27,10 @@ export class UpdateStudentController {
 
       if (error instanceof StudentNotFoundError) {
         return notFound(error.message, error.code);
+      }
+
+      if (error instanceof EmailAlreadyTakenError) {
+        return conflict(error.message, error.code);
       }
 
       console.log(error);

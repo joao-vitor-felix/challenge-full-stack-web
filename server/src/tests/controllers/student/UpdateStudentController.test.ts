@@ -1,6 +1,6 @@
 import { ErrorResponse } from "@/controllers/helpers/http";
 import { UpdateStudentController } from "@/controllers/student/UpdateStudentController";
-import { StudentNotFoundError } from "@/errors/student";
+import { EmailAlreadyTakenError, StudentNotFoundError } from "@/errors/student";
 import { UpdateStudentSchema } from "@/schemas";
 import { Student } from "@/types/Student";
 import { UpdateStudentUseCase } from "@/useCases/student/UpdateStudentUseCase";
@@ -190,6 +190,19 @@ describe("UpdateStudentController", () => {
     expect(response.statusCode).toBe(404);
     expect(response.body.message).toMatch(/not found/i);
     expect(response.body.code).toBe("STUDENT_NOT_FOUND");
+  });
+
+  it("should return 409 when use case throws EmailAlreadyTakenError", async () => {
+    const { sut, updateStudentUseCase } = makeSut();
+    vi.spyOn(updateStudentUseCase, "execute").mockRejectedValueOnce(
+      new EmailAlreadyTakenError()
+    );
+
+    const response = (await sut.execute(httpRequest)) as ErrorResponse;
+
+    expect(response.statusCode).toBe(409);
+    expect(response.body.message).toMatch(/already been taken/i);
+    expect(response.body.code).toBe("EMAIL_ALREADY_TAKEN");
   });
 
   it("should return 500 when use case throws an unknown error", async () => {
