@@ -65,6 +65,16 @@ describe("CreateStudentController", () => {
       errorMessage: /must be a string/i
     },
     {
+      scenario: "ra is not numeric",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          ra: "nnnnnnnnnnn"
+        }
+      },
+      errorMessage: /must be numeric/i
+    },
+    {
       scenario: "ra is less than 11 characters",
       httpRequest: {
         body: {
@@ -113,6 +123,16 @@ describe("CreateStudentController", () => {
         }
       },
       errorMessage: /must contain 11/i
+    },
+    {
+      scenario: "cpf is not numeric",
+      httpRequest: {
+        body: {
+          ...httpRequest.body,
+          cpf: "nnnnnnnnnnn"
+        }
+      },
+      errorMessage: /must be numeric/i
     },
     {
       scenario: "name is not a string",
