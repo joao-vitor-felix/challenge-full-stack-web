@@ -1,7 +1,12 @@
 import { api } from "@/lib/api";
-import type { ListStudentsResponse } from "@/types/Student";
+import type { CreateStudentSchema } from "@/schemas/createStudentDialog";
+import type { ListStudentsResponse, Student } from "@/types/Student";
 
 export class StudentService {
+  static async create(params: CreateStudentSchema) {
+    await api.post<Student>("/students", params);
+  }
+
   static async list(page: number, pageSize: number, name = "") {
     let url = `/students?page=${page}&pageSize=${pageSize}`;
 
