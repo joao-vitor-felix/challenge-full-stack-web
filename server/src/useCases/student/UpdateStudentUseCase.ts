@@ -9,7 +9,7 @@ export class UpdateStudentUseCase {
     if (params.email) {
       const student = await this.studentRepository.findByEmail(params.email);
 
-      if (student) {
+      if (student && student.ra !== ra) {
         throw new EmailAlreadyTakenError();
       }
     }
