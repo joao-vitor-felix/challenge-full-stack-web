@@ -67,7 +67,8 @@ onUnmounted(() => {
                 @update:modelValue="field.handleChange"
                 @blur="field.handleBlur"
                 :error-messages="state.meta.errors[0]?.message"
-                label="Digite o RA"
+                label="RA"
+                placeholder="Digite o RA"
               />
             </template>
           </form.Field>
@@ -80,7 +81,8 @@ onUnmounted(() => {
                 @update:modelValue="field.handleChange"
                 @blur="field.handleBlur"
                 :error-messages="state.meta.errors[0]?.message"
-                label="Digite o CPF"
+                label="CPF"
+                placeholder="Digite o CPF"
               />
             </template>
           </form.Field>
@@ -92,8 +94,9 @@ onUnmounted(() => {
                 :model-value="field.state.value"
                 @update:modelValue="field.handleChange"
                 @blur="field.handleBlur"
-                label="Nome"
                 :error-messages="state.meta.errors[0]?.message"
+                label="Nome"
+                placeholder="Digite o nome"
               />
             </template>
           </form.Field>
@@ -105,8 +108,9 @@ onUnmounted(() => {
                 :model-value="field.state.value"
                 @update:modelValue="field.handleChange"
                 @blur="field.handleBlur"
-                label="E-mail"
                 :error-messages="state.meta.errors[0]?.message"
+                label="E-mail"
+                placeholder="Digite o e-mail"
               />
             </template>
           </form.Field>
