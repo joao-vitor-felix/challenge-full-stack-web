@@ -20,9 +20,11 @@ function handleLogout() {
       <span class="w-100 text-center font-weight-bold">Módulo acadêmico</span>
     </div>
     <v-list>
-      <v-list-item prepend-icon="mdi-account" :active="isActive" active-color="secondary"
-        >Alunos</v-list-item
-      >
+      <RouterLink to="/" style="text-decoration: none; color: inherit">
+        <v-list-item prepend-icon="mdi-account" :active="isActive" active-color="secondary"
+          >Alunos</v-list-item
+        >
+      </RouterLink>
     </v-list>
 
     <template v-slot:append>
