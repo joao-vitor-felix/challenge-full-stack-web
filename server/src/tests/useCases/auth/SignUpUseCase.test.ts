@@ -37,7 +37,6 @@ describe("SignUpUseCase", () => {
       id: expect.any(String),
       name: staff.name,
       email: staff.email,
-      hashedPassword: "hashedPassword",
       role: staff.role
     });
   });
