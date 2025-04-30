@@ -9,12 +9,12 @@ import { Student } from "@/types/Student";
 import { faker } from "@faker-js/faker";
 
 export class StudentRepositoryStub implements IStudentRepository {
-  async findByEmail(ra: string): Promise<Student | null> {
+  async findByEmail(email: string): Promise<Student | null> {
     return Promise.resolve<Student>({
-      ra,
+      ra: faker.string.numeric(11),
       cpf: faker.string.numeric(11),
       name: faker.person.fullName(),
-      email: faker.internet.email()
+      email
     });
   }
 

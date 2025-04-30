@@ -8,7 +8,7 @@ export interface IStudentRepository {
     params: DataAvailabilityParams
   ): Promise<DataAvailabilityParams[]>;
   findByRa(ra: string): Promise<Student | null>;
-  findByEmail(ra: string): Promise<Student | null>;
+  findByEmail(email: string): Promise<Student | null>;
   update(ra: string, params: UpdateStudentSchema): Promise<Student | null>;
   list(
     page: number,
