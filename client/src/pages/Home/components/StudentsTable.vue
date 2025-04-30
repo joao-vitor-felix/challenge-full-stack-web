@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import CreateStudentDialog from "@/components/CreateStudentDialog.vue";
 import { studentsTableHeaders } from "@/utils/studentsTableHeaders";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useListStudents } from "../composables/useListStudents";
 import TableActions from "./TableActions.vue";
 
@@ -24,7 +25,11 @@ function handleSearch() {
   refetch();
 }
 
-const isEmptyResponse = !isLoading && !isFetching && !isError && !response.value?.data.length;
+const isEmptyResponse = computed(
+  () => !isLoading.value && !isFetching.value && !isError.value && !response.value?.data.length
+);
+
+const isCreateDialogOpen = ref(false);
 </script>
 
 <template>
@@ -44,7 +49,14 @@ const isEmptyResponse = !isLoading && !isFetching && !isError && !response.value
         >
       </div>
 
-      <v-btn color="primary" class="ml-2 justify-end" append-icon="mdi-plus">Cadastrar Aluno</v-btn>
+      <v-btn
+        color="primary"
+        class="ml-2 justify-end"
+        append-icon="mdi-plus"
+        @click="isCreateDialogOpen = true"
+        >Cadastrar Aluno</v-btn
+      >
+      <CreateStudentDialog v-model:isOpen="isCreateDialogOpen" v-if="isCreateDialogOpen" />
     </div>
 
     <v-data-table
