@@ -17,9 +17,9 @@ export const errorMessageMap: Record<ErrorCode, string> = {
   PASSWORD_MISMATCH: "Senha incorreta",
   STAFF_NOT_FOUND: "Conta não encontrada",
   INTERNAL_SERVER_ERROR: "Erro interno do servidor",
-  CPF_ALREADY_TAKEN: "Já existe um estudante com o CPF informado",
-  RA_ALREADY_TAKEN: "Já existe um estudante com o RA informado",
-  EMAIL_ALREADY_TAKEN: "Já existe um estudante com o e-mail informado",
+  CPF_ALREADY_TAKEN: "CPF já cadastrado",
+  RA_ALREADY_TAKEN: "RA já cadastrado",
+  EMAIL_ALREADY_TAKEN: "E-mail já cadastrado",
   STAFF_ALREADY_EXISTS: "Funcionário já existe",
   STUDENT_NOT_FOUND: "Estudante não encontrado"
 };
