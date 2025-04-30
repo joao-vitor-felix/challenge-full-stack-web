@@ -49,6 +49,16 @@ export function badRequest(
   };
 }
 
+export function unauthorized(): ErrorResponse {
+  return {
+    statusCode: 401,
+    body: {
+      message: "Unauthorized",
+      code: "UNAUTHORIZED"
+    }
+  };
+}
+
 export function conflict(message: string, code: string): ErrorResponse {
   return {
     statusCode: 409,
