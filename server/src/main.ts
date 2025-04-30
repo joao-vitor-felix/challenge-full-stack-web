@@ -14,7 +14,7 @@ const FIFTEEN_MINUTES = 15 * 60 * 1000;
 
 const limiter = rateLimit({
   windowMs: FIFTEEN_MINUTES,
-  max: 100,
+  max: 1000,
   message: JSON.stringify({
     message: "Too many requests, please try again later."
   })
