@@ -31,7 +31,7 @@ export class SignInController {
       }
 
       if (error instanceof PasswordMismatchError) {
-        return badRequest(error.message);
+        return badRequest(error.message, error.code);
       }
 
       console.log(error);

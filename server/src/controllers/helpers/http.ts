@@ -36,12 +36,15 @@ export function notFound(message: string, code: string): ErrorResponse {
   };
 }
 
-export function badRequest(message: string): ErrorResponse {
+export function badRequest(
+  message: string,
+  code = "INVALID_REQUEST"
+): ErrorResponse {
   return {
     statusCode: 400,
     body: {
       message: message,
-      code: "INVALID_REQUEST"
+      code
     }
   };
 }

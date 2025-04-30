@@ -143,7 +143,7 @@ describe("SignInController", () => {
 
     expect(response.statusCode).toBe(400);
     expect(response.body.message).toMatch(/wrong password/i);
-    expect(response.body.code).toBe("INVALID_REQUEST");
+    expect(response.body.code).toBe("PASSWORD_MISMATCH");
   });
 
   it("should return 500 when use case throws an unknown error", async () => {
