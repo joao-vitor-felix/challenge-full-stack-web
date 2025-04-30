@@ -86,7 +86,7 @@ const isCreateDialogOpen = ref(false);
       </template>
 
       <template v-slot:bottom>
-        <div class="text-center pt-2" v-if="response && response.pagination">
+        <div class="text-center pt-2" v-if="response && response.pagination.totalPages > 1">
           <v-pagination
             v-model="page"
             :length="response.pagination.totalPages"
