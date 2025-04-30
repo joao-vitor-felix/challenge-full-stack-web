@@ -22,10 +22,10 @@ export class StudentRepositoryStub implements IStudentRepository {
     return Promise.resolve(params);
   }
 
-  async findStudentsWithMatchingData(
+  async findStudentWithMatchingData(
     _params: DataAvailabilityParams
-  ): Promise<DataAvailabilityParams[]> {
-    return Promise.resolve([]);
+  ): Promise<Student | null> {
+    return Promise.resolve(null);
   }
 
   async findByRa(ra: string): Promise<Student | null> {

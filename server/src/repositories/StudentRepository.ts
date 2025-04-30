@@ -22,10 +22,10 @@ export class StudentRepository implements IStudentRepository {
     return student[0];
   }
 
-  async findStudentsWithMatchingData(
+  async findStudentWithMatchingData(
     params: DataAvailabilityParams
-  ): Promise<DataAvailabilityParams[]> {
-    const students = await this.db.query<DataAvailabilityParams>(
+  ): Promise<Student> {
+    const [student] = await this.db.query<Student>(
       `select * from students
       where ra = $1
       or cpf = $2
@@ -34,7 +34,7 @@ export class StudentRepository implements IStudentRepository {
       [params.ra, params.cpf, params.email]
     );
 
-    return students;
+    return student ?? null;
   }
 
   async findByRa(ra: string): Promise<Student | null> {

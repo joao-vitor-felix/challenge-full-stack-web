@@ -4,9 +4,9 @@ import { Student } from "@/types/Student";
 
 export interface IStudentRepository {
   create(params: CreateStudentSchema): Promise<Student>;
-  findStudentsWithMatchingData(
+  findStudentWithMatchingData(
     params: DataAvailabilityParams
-  ): Promise<DataAvailabilityParams[]>;
+  ): Promise<Student | null>;
   findByRa(ra: string): Promise<Student | null>;
   findByEmail(email: string): Promise<Student | null>;
   update(ra: string, params: UpdateStudentSchema): Promise<Student | null>;

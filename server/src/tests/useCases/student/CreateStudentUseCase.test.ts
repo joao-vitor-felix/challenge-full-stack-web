@@ -35,7 +35,7 @@ describe("CreateStudentUseCase", () => {
 
   it("should call findStudentsWithMatchingData with correct params", async () => {
     const { sut, studentRepository } = makeSut();
-    const spy = vi.spyOn(studentRepository, "findStudentsWithMatchingData");
+    const spy = vi.spyOn(studentRepository, "findStudentWithMatchingData");
 
     await sut.execute(student);
 
@@ -61,49 +61,41 @@ describe("CreateStudentUseCase", () => {
     {
       scenario: "RA is already taken",
       error: RaAlreadyTakenError,
-      students: [
-        {
-          ra: student.ra,
-          cpf: faker.string.numeric(11),
-          email: faker.internet.email(),
-          name: faker.person.fullName()
-        }
-      ]
+      existingStudent: {
+        ra: student.ra,
+        cpf: faker.string.numeric(11),
+        email: faker.internet.email(),
+        name: faker.person.fullName()
+      }
     },
     {
       scenario: "Cpf is already taken",
       error: CpfAlreadyTakenError,
-      students: [
-        {
-          ra: faker.string.numeric(11),
-          cpf: student.cpf,
-          email: faker.internet.email(),
-          name: faker.person.fullName()
-        }
-      ]
+      existingStudent: {
+        ra: faker.string.numeric(11),
+        cpf: student.cpf,
+        email: faker.internet.email(),
+        name: faker.person.fullName()
+      }
     },
     {
       scenario: "Email is already taken",
       error: EmailAlreadyTakenError,
-      students: [
-        {
-          ra: faker.string.numeric(11),
-          cpf: faker.string.numeric(11),
-          email: student.email,
-          name: faker.person.fullName()
-        }
-      ]
+      existingStudent: {
+        ra: faker.string.numeric(11),
+        cpf: faker.string.numeric(11),
+        email: student.email,
+        name: faker.person.fullName()
+      }
     }
-  ])("should throw if $scenario", async ({ error, students }) => {
+  ])("should throw if $scenario", async ({ error, existingStudent }) => {
     const { sut, studentRepository } = makeSut();
     vi.spyOn(
       studentRepository,
-      "findStudentsWithMatchingData"
-    ).mockResolvedValueOnce(students);
+      "findStudentWithMatchingData"
+    ).mockResolvedValueOnce(existingStudent);
 
-    const promise = sut.execute(student);
-
-    await expect(promise).rejects.toBeInstanceOf(error);
+    await expect(sut.execute(student)).rejects.toBeInstanceOf(error);
   });
 
   it("should throw if student repository throws", async () => {
