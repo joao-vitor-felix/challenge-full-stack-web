@@ -64,7 +64,7 @@ const form = useForm({
       </div>
 
       <v-card-text>
-        <form @submit.prevent.stop="form.handleSubmit" class="d-flex flex-column ga-2">
+        <v-form @submit.prevent.stop="form.handleSubmit" class="d-flex flex-column ga-2">
           <form.Field name="name">
             <template v-slot="{ field, state }">
               <v-text-field
@@ -143,7 +143,7 @@ const form = useForm({
           </form.Field>
 
           <v-btn class="align-self-center w-100" color="secondary" type="submit">Cadastrar</v-btn>
-        </form>
+        </v-form>
       </v-card-text>
     </v-card>
   </v-container>
