@@ -6,7 +6,7 @@ import { useListStudents } from "../composables/useListStudents";
 import TableActions from "./TableActions.vue";
 
 const page = ref(1);
-const pageSize = ref(2);
+const pageSize = ref(10);
 const search = ref("");
 
 const {
@@ -71,7 +71,7 @@ const isCreateDialogOpen = ref(false);
       loading-text=""
     >
       <template v-slot:[`item.actions`]="{ item }">
-        <TableActions :ra="item.ra" :name="item.name" />
+        <TableActions :student="item" />
       </template>
 
       <template v-slot:loader>
