@@ -39,8 +39,8 @@ function closeDialog() {
     :model-value="isOpen"
     @update:model-value="emit('update:isOpen', $event)"
   >
-    <v-card title="Deleção de estudante">
-      <v-card-text> Desejar deletar o estudante {{ name }}? </v-card-text>
+    <v-card title="Deleção de aluno">
+      <v-card-text> Desejar deletar o aluno {{ name }}? </v-card-text>
 
       <v-card-actions>
         <v-btn text="Close Dialog" @click="closeDialog" :disabled="mutation.isPending.value"
