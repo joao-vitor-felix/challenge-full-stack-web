@@ -9,7 +9,7 @@
     "test": "vitest run",
     "test:watch": "vitest watch",
     "typecheck": "tsc --noEmit",
-    "prepare": "husky"
+    "prepare": "cd .. && husky server/.husky"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
