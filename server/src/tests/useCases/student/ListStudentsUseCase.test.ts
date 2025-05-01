@@ -84,6 +84,64 @@ describe("ListStudentsUseCase", () => {
     await expect(sut.execute(params)).resolves.toEqual(cachedStudents);
   });
 
+  it("should persist cache if data length is higher than 0", async () => {
+    const students: ListStudentsOutput = {
+      data: [
+        {
+          ra: "123456789",
+          cpf: "12345678901",
+          name: "John Doe",
+          email: "johndoe@gmail.com"
+        }
+      ],
+      pagination: {
+        total: 0,
+        totalPages: 0,
+        pageSize: 10,
+        currentPage: 1
+      }
+    };
+
+    const { sut, cacheAdapter, studentRepository } = makeSut();
+    const setSpy = vi.spyOn(cacheAdapter, "set");
+    vi.spyOn(cacheAdapter, "get").mockReturnValueOnce(undefined);
+    vi.spyOn(studentRepository, "list").mockResolvedValueOnce(students);
+    const cacheKey = `students:page:${params.page}:size:${params.pageSize}:name:${params.name}`;
+
+    await sut.execute(params);
+
+    expect(setSpy).toHaveBeenCalledExactlyOnceWith(cacheKey, students);
+  });
+
+  it("should persist cache if data length is higher than 0", async () => {
+    const students: ListStudentsOutput = {
+      data: [
+        {
+          ra: "123456789",
+          cpf: "12345678901",
+          name: "John Doe",
+          email: "johndoe@gmail.com"
+        }
+      ],
+      pagination: {
+        total: 0,
+        totalPages: 0,
+        pageSize: 10,
+        currentPage: 1
+      }
+    };
+
+    const { sut, cacheAdapter, studentRepository } = makeSut();
+    const setSpy = vi.spyOn(cacheAdapter, "set");
+    vi.spyOn(cacheAdapter, "get").mockReturnValueOnce(undefined);
+    vi.spyOn(studentRepository, "list").mockResolvedValueOnce(students);
+    const cacheKey = `students:page:${params.page}:size:${params.pageSize}:name:${params.name}`;
+
+    await sut.execute(params);
+
+    expect(setSpy).toHaveBeenCalledExactlyOnceWith(cacheKey, students);
+  });
+
   it("should throw when repository throws", async () => {
     const { sut, studentRepository, cacheAdapter } = makeSut();
     vi.spyOn(cacheAdapter, "get").mockReturnValueOnce(undefined);
