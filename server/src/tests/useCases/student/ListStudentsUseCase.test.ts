@@ -142,6 +142,27 @@ describe("ListStudentsUseCase", () => {
     expect(setSpy).toHaveBeenCalledExactlyOnceWith(cacheKey, students);
   });
 
+  it("should not persist cache if data there's no data length", async () => {
+    const students: ListStudentsOutput = {
+      data: [],
+      pagination: {
+        total: 0,
+        totalPages: 0,
+        pageSize: 10,
+        currentPage: 1
+      }
+    };
+
+    const { sut, cacheAdapter, studentRepository } = makeSut();
+    const setSpy = vi.spyOn(cacheAdapter, "set");
+    vi.spyOn(cacheAdapter, "get").mockReturnValueOnce(undefined);
+    vi.spyOn(studentRepository, "list").mockResolvedValueOnce(students);
+
+    await sut.execute(params);
+
+    expect(setSpy).not.toHaveBeenCalled();
+  });
+
   it("should throw when repository throws", async () => {
     const { sut, studentRepository, cacheAdapter } = makeSut();
     vi.spyOn(cacheAdapter, "get").mockReturnValueOnce(undefined);
