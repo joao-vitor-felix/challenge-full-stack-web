@@ -1,3 +1,4 @@
+import { ListStudentsOutput } from "@/repositories";
 import { ListStudentsSchema } from "@/schemas";
 import { CacheAdapterStub } from "@/tests/stubs/CacheAdapterStub";
 import { StudentRepositoryStub } from "@/tests/stubs/StudentRepositoryStub";
@@ -40,8 +41,8 @@ describe("ListStudentsUseCase", () => {
       pagination: expect.objectContaining({
         total: expect.any(Number),
         totalPages: expect.any(Number),
-        pageSize: expect.any(Number),
-        currentPage: expect.any(Number)
+        pageSize: params.pageSize,
+        currentPage: params.page
       })
     });
   });
@@ -56,6 +57,31 @@ describe("ListStudentsUseCase", () => {
 
     expect(spy).toHaveBeenCalledOnce();
     expect(spy).toHaveBeenCalledWith(params.page, params.pageSize, params.name);
+  });
+
+  it("should return cached students if found", async () => {
+    const { sut, cacheAdapter } = makeSut();
+
+    const cachedStudents: ListStudentsOutput = {
+      data: [
+        {
+          ra: "123456789",
+          cpf: "12345678901",
+          name: "John Doe",
+          email: "johndoe@gmail.com"
+        }
+      ],
+      pagination: {
+        total: 1,
+        totalPages: 1,
+        pageSize: 10,
+        currentPage: 1
+      }
+    };
+
+    vi.spyOn(cacheAdapter, "get").mockReturnValueOnce(cachedStudents);
+
+    await expect(sut.execute(params)).resolves.toEqual(cachedStudents);
   });
 
   it("should throw when repository throws", async () => {
