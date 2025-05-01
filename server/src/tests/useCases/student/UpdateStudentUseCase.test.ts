@@ -1,5 +1,6 @@
 import { EmailAlreadyTakenError, StudentNotFoundError } from "@/errors/student";
 import { UpdateStudentSchema } from "@/schemas";
+import { CacheAdapterStub } from "@/tests/stubs/CacheAdapterStub";
 import { StudentRepositoryStub } from "@/tests/stubs/StudentRepositoryStub";
 import { Student } from "@/types/Student";
 import { UpdateStudentUseCase } from "@/useCases/student/UpdateStudentUseCase";
@@ -8,9 +9,11 @@ import { faker } from "@faker-js/faker";
 describe("UpdateStudentUseCase", () => {
   function makeSut() {
     const studentRepository = new StudentRepositoryStub();
-    const sut = new UpdateStudentUseCase(studentRepository);
+    const cacheAdapter = new CacheAdapterStub();
+    const sut = new UpdateStudentUseCase(cacheAdapter, studentRepository);
     return {
       studentRepository,
+      cacheAdapter,
       sut
     };
   }
@@ -44,6 +47,20 @@ describe("UpdateStudentUseCase", () => {
 
     expect(spy).toHaveBeenCalledOnce();
     expect(spy).toHaveBeenCalledWith(ra, params);
+  });
+
+  it("should call delete cache keys when a student is updated", async () => {
+    const keys = ["students:page:1", "students:page:2", "students:page:3"];
+
+    const { sut, cacheAdapter, studentRepository } = makeSut();
+    vi.spyOn(studentRepository, "findByEmail").mockResolvedValueOnce(null);
+    vi.spyOn(cacheAdapter, "keys").mockReturnValue(keys);
+
+    const deleteSpy = vi.spyOn(cacheAdapter, "delete");
+
+    await sut.execute(ra, params);
+
+    expect(deleteSpy).toHaveBeenCalledExactlyOnceWith(keys);
   });
 
   it("should throw EmailAlreadyTakenError if student with provided email is found", async () => {
