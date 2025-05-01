@@ -76,7 +76,7 @@ O controle de acesso foi implementado com duas roles, são elas:
 
 Para facilitar o teste da API, foi criada uma collection para o [**Postman**](https://www.postman.com/) que pode ser baixada em [**aqui**](/+a%20Educação%20API.postman_collection.json). A collection contém todas as rotas da API e exemplos de requisições.
 
-## Qualidade da API
+### Qualidade da API
 
 Foi escrito testes unitários para todas as camadas com um **coverage de 60%**.
 
