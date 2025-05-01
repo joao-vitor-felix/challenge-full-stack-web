@@ -1,7 +1,7 @@
 import { reactive } from "vue";
 
-export const authStore = reactive({
-  isAuthenticated: localStorage.getItem("access_token") ?? false,
+export const authStore = reactive<AuthStore>({
+  isAuthenticated: !!localStorage.getItem("access_token"),
   login(accessToken: string, refreshToken: string) {
     localStorage.setItem("access_token", accessToken);
     localStorage.setItem("refresh_token", refreshToken);
@@ -13,3 +13,9 @@ export const authStore = reactive({
     this.isAuthenticated = false;
   }
 });
+
+type AuthStore = {
+  isAuthenticated: boolean;
+  login: (accessToken: string, refreshToken: string) => void;
+  logout: () => void;
+};
