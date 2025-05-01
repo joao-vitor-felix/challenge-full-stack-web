@@ -23,9 +23,8 @@ api.interceptors.response.use(
   async function (error) {
     const originalRequest = error.config;
     const refreshToken = localStorage.getItem("refresh_token");
-    const accessToken = localStorage.getItem("access_token");
 
-    if (originalRequest.url === "/auth/refresh-token" || !refreshToken || !accessToken) {
+    if (originalRequest.url === "/auth/refresh-token" || !refreshToken) {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       authStore.isAuthenticated = false;
