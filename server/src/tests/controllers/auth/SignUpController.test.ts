@@ -1,20 +1,19 @@
 import { SignUpController } from "@/controllers/auth";
 import { ErrorResponse } from "@/controllers/helpers/http";
 import { EmailAlreadyTakenError } from "@/errors";
+import { StaffWithoutPassword } from "@/repositories";
 import { SignUpSchema } from "@/schemas";
-import { Staff } from "@/types/Staff";
 import { SignUpUseCase } from "@/useCases";
 import { faker } from "@faker-js/faker";
 import type { Request } from "express";
 
 describe("SignUpController", () => {
   class SignUpUseCaseStub {
-    async execute(params: SignUpSchema): Promise<Staff> {
+    async execute(params: SignUpSchema): Promise<StaffWithoutPassword> {
       return {
         id: faker.string.uuid(),
         name: params.name,
         email: params.email,
-        hashedPassword: faker.string.nanoid(),
         role: params.role
       };
     }
@@ -45,11 +44,10 @@ describe("SignUpController", () => {
     const response = await sut.execute(httpRequest);
 
     expect(response.statusCode).toBe(201);
-    expect(response.body).toEqual<Staff>({
+    expect(response.body).toEqual<StaffWithoutPassword>({
       id: expect.any(String),
       name: httpRequest.body.name,
       email: httpRequest.body.email,
-      hashedPassword: expect.any(String),
       role: httpRequest.body.role
     });
   });
