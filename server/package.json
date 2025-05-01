@@ -8,7 +8,8 @@
     "start": "node dist/main.js",
     "test": "vitest run",
     "test:watch": "vitest watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
@@ -34,6 +35,8 @@
     "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.1",
     "prettier": "^3.5.3",
     "tsup": "^8.4.0",
     "tsx": "^4.19.3",
