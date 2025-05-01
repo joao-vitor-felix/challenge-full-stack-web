@@ -1,4 +1,5 @@
 import { StudentNotFoundError } from "@/errors/student";
+import { CacheAdapterStub } from "@/tests/stubs/CacheAdapterStub";
 import { StudentRepositoryStub } from "@/tests/stubs/StudentRepositoryStub";
 import { DeleteStudentUseCase } from "@/useCases/student/DeleteStudentUseCase";
 import { faker } from "@faker-js/faker";
@@ -6,9 +7,11 @@ import { faker } from "@faker-js/faker";
 describe("DeleteStudentUseCase", () => {
   function makeSut() {
     const studentRepository = new StudentRepositoryStub();
-    const sut = new DeleteStudentUseCase(studentRepository);
+    const cacheAdapter = new CacheAdapterStub();
+    const sut = new DeleteStudentUseCase(cacheAdapter, studentRepository);
     return {
       studentRepository,
+      cacheAdapter,
       sut
     };
   }
@@ -31,6 +34,17 @@ describe("DeleteStudentUseCase", () => {
 
     expect(spy).toHaveBeenCalledOnce();
     expect(spy).toHaveBeenCalledWith(ra);
+  });
+
+  it("should call delete cache keys when a student is deleted", async () => {
+    const { sut, cacheAdapter } = makeSut();
+    const keys = ["students:page:1", "students:page:2", "students:page:3"];
+    vi.spyOn(cacheAdapter, "keys").mockReturnValue(keys);
+    const deleteSpy = vi.spyOn(cacheAdapter, "delete");
+
+    await sut.execute(ra);
+
+    expect(deleteSpy).toHaveBeenCalledExactlyOnceWith(keys);
   });
 
   it("should throw StudentNotFoundError when student is not found", async () => {
