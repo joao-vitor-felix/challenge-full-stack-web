@@ -29,7 +29,10 @@ export function makeCreateStudentController() {
 }
 
 export function makeDeleteStudentController() {
-  const deleteStudentUseCase = new DeleteStudentUseCase(studentRepository);
+  const deleteStudentUseCase = new DeleteStudentUseCase(
+    cache,
+    studentRepository
+  );
   const deleteStudentController = new DeleteStudentController(
     deleteStudentUseCase
   );
@@ -37,7 +40,10 @@ export function makeDeleteStudentController() {
 }
 
 export function makeUpdateStudentController() {
-  const updateStudentUseCase = new UpdateStudentUseCase(studentRepository);
+  const updateStudentUseCase = new UpdateStudentUseCase(
+    cache,
+    studentRepository
+  );
   const updateStudentController = new UpdateStudentController(
     updateStudentUseCase
   );
