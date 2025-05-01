@@ -42,8 +42,8 @@ const form = useForm({
         password: value.password
       },
       {
-        onSuccess: data => {
-          router.push(`/sign-in?email=${data.email}`);
+        onSuccess: async data => {
+          await router.push(`/sign-in?email=${data.email}`);
           toast.success("Cadastro realizado! Você já pode acessar sua conta.");
         },
         onError: ({ response }) => {
