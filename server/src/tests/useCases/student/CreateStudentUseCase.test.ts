@@ -3,6 +3,7 @@ import {
   EmailAlreadyTakenError,
   RaAlreadyTakenError
 } from "@/errors/student";
+import { CacheAdapterStub } from "@/tests/stubs/CacheAdapterStub";
 import { Student } from "@/types/Student";
 import { CreateStudentUseCase } from "@/useCases/student/CreateStudentUseCase";
 import { faker } from "@faker-js/faker";
@@ -11,7 +12,8 @@ import { StudentRepositoryStub } from "../../stubs/StudentRepositoryStub";
 describe("CreateStudentUseCase", () => {
   function makeSut() {
     const studentRepository = new StudentRepositoryStub();
-    const sut = new CreateStudentUseCase(studentRepository);
+    const cacheAdapter = new CacheAdapterStub();
+    const sut = new CreateStudentUseCase(cacheAdapter, studentRepository);
     return {
       studentRepository,
       sut

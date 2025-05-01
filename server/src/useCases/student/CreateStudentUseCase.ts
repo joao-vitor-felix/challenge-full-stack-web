@@ -1,3 +1,4 @@
+import { ICache } from "@/adapters/interfaces/ICache";
 import {
   CpfAlreadyTakenError,
   EmailAlreadyTakenError,
@@ -8,7 +9,10 @@ import { CreateStudentSchema } from "@/schemas/student/createStudentSchema";
 import { Student } from "@/types/Student";
 
 export class CreateStudentUseCase {
-  constructor(private studentRepository: IStudentRepository) {}
+  constructor(
+    private cache: ICache,
+    private studentRepository: IStudentRepository
+  ) {}
 
   async execute(params: CreateStudentSchema): Promise<Student> {
     const studentWithMatchingData =
@@ -33,6 +37,13 @@ export class CreateStudentUseCase {
     }
 
     const student = await this.studentRepository.create(params);
+    const studentKeys = this.cache
+      .keys()
+      .filter(key => key.startsWith("students:page:"));
+
+    const deletedKeys = this.cache.delete(studentKeys);
+    console.log(`${deletedKeys} cache keys deleted`);
+
     return student;
   }
 }
