@@ -1,3 +1,4 @@
+import { CacheAdapter } from "@/adapters/CacheAdapter";
 import { PostgresAdapter } from "@/adapters/PostgresAdapter";
 import {
   DeleteStudentController,
@@ -14,9 +15,13 @@ import { UpdateStudentUseCase } from "@/useCases/student/UpdateStudentUseCase";
 
 const db = new PostgresAdapter(pool);
 const studentRepository = new StudentRepository(db);
+const cache = new CacheAdapter();
 
 export function makeCreateStudentController() {
-  const createStudentUseCase = new CreateStudentUseCase(studentRepository);
+  const createStudentUseCase = new CreateStudentUseCase(
+    cache,
+    studentRepository
+  );
   const createStudentController = new CreateStudentController(
     createStudentUseCase
   );
@@ -40,7 +45,7 @@ export function makeUpdateStudentController() {
 }
 
 export function makeListStudentsController() {
-  const listStudentsUseCase = new ListStudentsUseCase(studentRepository);
+  const listStudentsUseCase = new ListStudentsUseCase(cache, studentRepository);
   const listStudentsController = new ListStudentsController(
     listStudentsUseCase
   );
