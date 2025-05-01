@@ -16,6 +16,7 @@ describe("CreateStudentUseCase", () => {
     const sut = new CreateStudentUseCase(cacheAdapter, studentRepository);
     return {
       studentRepository,
+      cacheAdapter,
       sut
     };
   }
@@ -57,6 +58,17 @@ describe("CreateStudentUseCase", () => {
 
     expect(spy).toHaveBeenCalledOnce();
     expect(spy).toHaveBeenCalledWith(student);
+  });
+
+  it("should call delete cache keys when a student is created", async () => {
+    const { sut, cacheAdapter } = makeSut();
+    const keys = ["students:page:1", "students:page:2", "students:page:3"];
+    vi.spyOn(cacheAdapter, "keys").mockReturnValue(keys);
+    const deleteSpy = vi.spyOn(cacheAdapter, "delete");
+
+    await sut.execute(student);
+
+    expect(deleteSpy).toHaveBeenCalledExactlyOnceWith(keys);
   });
 
   it.each([
