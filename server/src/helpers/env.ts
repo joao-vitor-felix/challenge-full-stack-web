@@ -6,7 +6,8 @@ export const env: Env = {
   POSTGRES_DATABASE: process.env.POSTGRES_DATABASE,
   POSTGRES_HOST: process.env.POSTGRES_HOST,
   JWT_SECRET: process.env.JWT_SECRET,
-  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET
+  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
+  CORS_ORIGIN: process.env.CORS_ORIGIN
 };
 
 type Env = {
@@ -18,4 +19,5 @@ type Env = {
   POSTGRES_HOST: string;
   JWT_SECRET: string;
   JWT_REFRESH_SECRET: string;
+  CORS_ORIGIN: string;
 };
