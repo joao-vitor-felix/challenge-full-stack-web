@@ -1,4 +1,5 @@
 import { ListStudentsSchema } from "@/schemas";
+import { CacheAdapterStub } from "@/tests/stubs/CacheAdapterStub";
 import { StudentRepositoryStub } from "@/tests/stubs/StudentRepositoryStub";
 import { Student } from "@/types/Student";
 import { ListStudentsUseCase } from "@/useCases";
@@ -6,10 +7,12 @@ import { ListStudentsUseCase } from "@/useCases";
 describe("ListStudentsUseCase", () => {
   function makeSut() {
     const studentRepository = new StudentRepositoryStub();
-    const sut = new ListStudentsUseCase(studentRepository);
+    const cacheAdapter = new CacheAdapterStub();
+    const sut = new ListStudentsUseCase(cacheAdapter, studentRepository);
     return {
       sut,
-      studentRepository
+      studentRepository,
+      cacheAdapter
     };
   }
 
@@ -20,7 +23,8 @@ describe("ListStudentsUseCase", () => {
   };
 
   it("should return students alongside pagination", async () => {
-    const { sut } = makeSut();
+    const { sut, cacheAdapter } = makeSut();
+    vi.spyOn(cacheAdapter, "get").mockReturnValueOnce(undefined);
 
     const result = await sut.execute(params);
 
@@ -43,7 +47,9 @@ describe("ListStudentsUseCase", () => {
   });
 
   it("should call list with correct params", async () => {
-    const { sut, studentRepository } = makeSut();
+    const { sut, studentRepository, cacheAdapter } = makeSut();
+    vi.spyOn(cacheAdapter, "get").mockReturnValueOnce(undefined);
+
     const spy = vi.spyOn(studentRepository, "list");
 
     await sut.execute(params);
@@ -53,7 +59,8 @@ describe("ListStudentsUseCase", () => {
   });
 
   it("should throw when repository throws", async () => {
-    const { sut, studentRepository } = makeSut();
+    const { sut, studentRepository, cacheAdapter } = makeSut();
+    vi.spyOn(cacheAdapter, "get").mockReturnValueOnce(undefined);
 
     vi.spyOn(studentRepository, "list").mockRejectedValueOnce(new Error());
 
