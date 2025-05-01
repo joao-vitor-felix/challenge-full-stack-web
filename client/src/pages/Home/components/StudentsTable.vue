@@ -9,6 +9,7 @@ import TableActions from "./TableActions.vue";
 const page = ref(1);
 const pageSize = ref(10);
 const search = ref("");
+const isCreateDialogOpen = ref(false);
 
 const {
   data: response,
@@ -22,15 +23,12 @@ function handleSearch() {
   if (page.value !== 1) {
     page.value = 1;
   }
-
   refetch();
 }
 
 const isEmptyResponse = computed(
   () => !isLoading.value && !isFetching.value && !isError.value && !response.value?.data.length
 );
-
-const isCreateDialogOpen = ref(false);
 </script>
 
 <template>
