@@ -18,7 +18,7 @@ Clone o projeto
 git clone git@github.com:joao-vitor-felix/challenge-full-stack-web.git && cd challenge-full-stack-web/server
 ```
 
-Instale as dependências com seu pacoter gerenciador favorito, como o `npm` ou `pnpm`
+Instale as dependências com seu pacote gerenciador favorito, como o `npm` ou `pnpm`
 
 ```bash
 npm install
