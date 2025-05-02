@@ -156,7 +156,7 @@ A lista de melhorias a seguir foi realizada pensando uma aplicação real em pro
 
 ## Frontend
 
-- **Testes unitários**: Aumentar o coverage para, pelo menos, 80%.
+- **Testes unitários**: Implementar testes unitários para garantir que os componentes funcionem corretamente.
 - **Testes de integração**: Implementar testes de integração para garantir que todas as partes da aplicação funcionem corretamente juntas.
 - **Code Splitting**: Implementar o code splitting para melhorar a performance da aplicação, dividindo o código em partes menores e carregando apenas o que é necessário.
 - **Controle de acesso**: Embora tenha sido implementado e está 100% funcional no backend, o controle de acesso não foi implementado no frontend. O ideal seria implementar o controle de acesso também no frontend para garantir que os usuários só possam recursos que estão autorizados.
