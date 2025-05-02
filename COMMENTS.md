@@ -68,7 +68,7 @@ O controle de acesso foi implementado com duas roles, são elas:
 
 - **Connection Pool**: Utilizado para melhorar a performance da aplicação reutilizando conexões ao banco de dados, reduzindo o tempo de resposta e a carga no banco de dados.
 - **Indexação**: Não foi criado nenhum index explicitamente, todos vieram de `PRIMARY KEY` e `UNIQUE`. Porém fica aqui o adendo, é sempre importante criar índices para melhorar a performance das consultas ao banco de dados.
-- **Paginação**: Utilizado para melhorar a performance da aplicação limitando o número de dados retornados em uma única requisição, reduzindo o tempo de resposta e a carga no banco de dados. Foi utilizado a abordagem de paginação baseada em offset e limit, onde o cliente pode solicitar um número específico de itens a serem retornados. Em uma aplicação que a quantidade de estudantes fosse consideravelmente alta, o ideal seria utilizar a paginação baseada em cursor, que é mais eficiente e escalável.
+- **Paginação**: Utilizado para melhorar a performance da aplicação limitando o número de dados retornados em uma única requisição, reduzindo o tempo de resposta e a carga no banco de dados. Foi utilizado a abordagem de paginação baseada em offset, onde o cliente pode solicitar um número específico de itens a serem retornados. Em uma aplicação que a quantidade de estudantes fosse consideravelmente alta, o ideal seria utilizar a paginação baseada em cursor, que é mais eficiente e escalável.
 - **Cacheamento de dados**: Utilizado para melhorar a performance da aplicação armazenando dados que são frequentemente acessados, reduzindo o número de requisições ao banco de dados. Foi utilizado o `node-cache` para cachear os dados. Em uma aplicação real, o ideal seria utilizar um cache distribuído, como o **Redis**.
 - **Rate Limiting**: Utilizado para limitar o número de requisições que um cliente pode fazer em um determinado período de tempo, evitando sobrecarga no servidor e garantindo a disponibilidade da aplicação. Foi utilizado o `express-rate-limit` para implementar o rate limiting. Em uma aplicação real, o ideal seria utilizar um serviço de rate limiting, como o [**Cloudflare**](https://www.cloudflare.com/) ou o [**AWS API Gateway**](https://aws.amazon.com/pt/api-gateway/).
 
@@ -78,7 +78,7 @@ Para facilitar o teste da API, foi criada uma collection para o [**Postman**](ht
 
 ### Qualidade da API
 
-Foi escrito testes unitários para todas as camadas com um **coverage de 60%**.
+Foi escrito testes unitários para as camadas de **Controllers** e **Use Cases**, assim atingindo **60% de coverage**.
 
 ## Frontend
 
@@ -105,7 +105,7 @@ A decisão de utilizar padrões já existentes e recomendados pelo **Vue.js** fo
 ## Backend
 
 - [**express**](https://expressjs.com/): Framework para construção de APIs em Node.js.
-- [**typescript**](https://www.typescriptlang.org/): Linguagem de programação que é um superconjunto do JavaScript.
+- [**Typescript**](https://www.typescriptlang.org/): Linguagem de programação que é um superconjunto do JavaScript.
 - [**cors**](https://www.npmjs.com/package/cors): Middleware para habilitar o CORS (Cross-Origin Resource Sharing).
 - [**express-rate-limit**](https://www.npmjs.com/package/express-rate-limit): Middleware para limitar o número de requisições em um determinado período de tempo.
 - [**node-cache**](https://www.npmjs.com/package/node-cache): Biblioteca para cache de dados em memória.
@@ -128,12 +128,12 @@ A decisão de utilizar padrões já existentes e recomendados pelo **Vue.js** fo
 - [**Vue Router**](https://router.vuejs.org/): Biblioteca para gerenciamento de rotas no Vue.js.
 - [**Vuetify**](https://vuetifyjs.com/en/): Biblioteca de componentes UI para Vue.js.
 - [**Tanstack Form**](https://tanstack.com/form/latest): Biblioteca para gerenciamento de formulários.
-- [**Tanstack Query**](https://tanstack.com/query/latest): Biblioteca para gerenciamento de estado assíncrono no Vue.js.
+- [**Tanstack Query**](https://tanstack.com/query/latest): Biblioteca para gerenciamento de estado assíncrono.
 - [**Axios**](https://axios-http.com/): Biblioteca para fazer requisições HTTP.
 - [**Vue3 Toastify**](https://vue3-toastify.com/): Biblioteca para exibir notificações no Vue.js.
 - [**zod**](https://zod.dev/): Biblioteca para validação de dados.
-- [**typescript**](https://www.typescriptlang.org/): Linguagem de programação que é um superconjunto do JavaScript.
-- [**Vite**](https://vitejs.dev/): Ferramenta de construção e desenvolvimento para aplicações Vue.js.
+- [**Typescript**](https://www.typescriptlang.org/): Linguagem de programação que é um superconjunto do JavaScript.
+- [**Vite**](https://vitejs.dev/): Ferramenta de construção e desenvolvimento para aplicações frontend.
 - [**eslint**](https://eslint.org/): Ferramenta para análise de código estático.
 - [**prettier**](https://prettier.io/): Ferramenta para formatação de código.
 - [**husky**](https://typicode.github.io/husky/#/): Ferramenta para executar scripts antes de fazer um commit.
@@ -141,9 +141,9 @@ A decisão de utilizar padrões já existentes e recomendados pelo **Vue.js** fo
 
 # Melhorias
 
-Antes de listar as melhorias, gostaria de ressaltar que em um cenário real, o fluxo de desenvolvimento seria atrás de branches e pull requests. Por se tratar de um teste técnico os commits foram realizados na `master` diretamente.
+Antes de listar as melhorias, gostaria de ressaltar que em um cenário real o fluxo de desenvolvimento seria através de branches e pull requests. Por se tratar de um teste técnico os commits foram realizados na `master` diretamente.
 
-A lista de melhorias a seguir foi realizada para uma aplicação real em produção, e não para o teste técnico em si.
+A lista de melhorias a seguir foi realizada pensando uma aplicação real em produção, e não para o teste técnico em si.
 
 ## Backend
 
@@ -152,7 +152,7 @@ A lista de melhorias a seguir foi realizada para uma aplicação real em produç
 - **Documentação**: Implementar a documentação da API utilizando o [**Swagger**](https://swagger.io/) ou qualquer outro serviço de documentação de APIs. A documentação da API é importante para garantir que os desenvolvedores que utilizam a API saibam como utilizá-la corretamente.
 - **Compressão de resposta**: Implementar a compressão de resposta para melhorar a performance da aplicação em grandes payloads, reduzindo o tamanho das respostas enviadas para o cliente. O ideal seria utilizar o **Gzip** ou qualquer outro serviço de compressão.
 - **Load Balancer**: Implementar um balanceador de carga para distribuir as requisições entre várias instâncias da aplicação, melhorando a performance e a escalabilidade da aplicação. O ideal seria utilizar um serviço de balanceamento de carga, como o [**AWS Elastic Load Balancing**](https://aws.amazon.com/pt/elasticloadbalancing/) ou qualquer outro.
-- **Retries**: Implementar retries para garantir que as requisições, como por exemplo ao banco de dados ou sistemas externos, sejam feitas novamente em caso de falha.
+- **Retries**: Implementar retries para garantir que as requisições, como por exemplo, ao banco de dados ou sistemas externos, sejam feitas novamente em caso de falha.
 
 ## Frontend
 
@@ -163,9 +163,9 @@ A lista de melhorias a seguir foi realizada para uma aplicação real em produç
 
 ## Melhorias gerais
 
-- **Monitoramento**: Implementar monitoramento da aplicação para garantir que a aplicação esteja funcionando corretamente e para identificar problemas rapidamente. O ideal seria utilizar um serviço de monitoramento, como o [**Sentry**](https://sentry.io/welcome/), ou qualquer outro, em conjunto com o [**Microsoft Clarity**](https://clarity.microsoft.com/) para entender o comportamento do usuário e identificar problemas de usabilidade e espaço para melhoria.
+- **Monitoramento**: Implementar monitoramento da aplicação para garantir que a aplicação esteja funcionando corretamente e para identificar problemas rapidamente. O ideal seria utilizar um serviço de monitoramento, como o [**Sentry**](https://sentry.io/welcome/), ou qualquer outro em conjunto com o [**Microsoft Clarity**](https://clarity.microsoft.com/) no frontend para entender o comportamento do usuário, identificar problemas de usabilidade e espaço para melhoria.
 - **CI/CD**: Implementar um pipeline de CI/CD para garantir que a aplicação esteja segura a falhas e garantir que toda versão que seja implantada esteja funcionando corretamente. O ideal seria utilizar um serviço de CI/CD, como o [**GitHub Actions**](https://github.com/features/actions), ou qualquer outro.
 
-# Requisitos
+# Requisitos obrigatórios que não foram entregues
 
 Todos os requisitos foram atendidos.
